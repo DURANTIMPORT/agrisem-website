@@ -111,12 +111,12 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/55" />
         <Reveal className="relative z-10 flex flex-col items-center">
           <Image
-            src="/logo.jpg"
+            src="/logo-white.png"
             alt="Agrisem S.A."
-            width={220}
-            height={46}
+            width={320}
+            height={67}
             priority
-            className="mb-8 h-9 w-auto mix-blend-screen [filter:invert(1)] sm:h-12"
+            className="mb-8 h-14 w-auto sm:h-20"
           />
           <Parallax speed={0.4}>
             <h1 className="max-w-4xl text-4xl font-semibold tracking-tight sm:text-6xl lg:text-7xl">
