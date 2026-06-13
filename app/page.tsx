@@ -41,6 +41,23 @@ const brands = [
     },
   },
   {
+    name: "Kuhn",
+    tagline: "Matériel de fertilisation et de fenaison",
+    description:
+      "Des solutions innovantes pour le travail du sol, le semis, la fertilisation et la récolte des fourrages.",
+    href: "https://www.kuhn.fr",
+    image: "/brands/kuhn.jpg",
+    imageAlt: "Épandeur Kuhn Axent en action dans un champ",
+    bg: "bg-[#fdf3e7]",
+    fg: "text-navy-dark",
+    accent: "#e9531e",
+    video: {
+      mp4: "/brands/kuhn-hero.mp4",
+      webm: "/brands/kuhn-hero.webm",
+      poster: "/brands/kuhn-poster.jpg",
+    },
+  },
+  {
     name: "Takeuchi",
     tagline: "Engins de chantier",
     description:
@@ -51,6 +68,7 @@ const brands = [
     bg: "bg-[#1a1a1a]",
     fg: "text-white",
     accent: "#e7161e",
+    reverse: true,
     video: {
       mp4: "/brands/takeuchi-hero.mp4",
       webm: "/brands/takeuchi-hero.webm",
@@ -92,16 +110,14 @@ export default function Home() {
         </Parallax>
         <div className="absolute inset-0 bg-black/55" />
         <Reveal className="relative z-10 flex flex-col items-center">
-          <div className="mb-8 inline-flex items-center rounded-2xl bg-white/95 px-6 py-3 shadow-lg backdrop-blur">
-            <Image
-              src="/logo.jpg"
-              alt="Agrisem S.A."
-              width={220}
-              height={46}
-              priority
-              className="h-9 w-auto sm:h-12"
-            />
-          </div>
+          <Image
+            src="/logo.jpg"
+            alt="Agrisem S.A."
+            width={220}
+            height={46}
+            priority
+            className="mb-8 h-9 w-auto mix-blend-screen [filter:invert(1)] sm:h-12"
+          />
           <Parallax speed={0.4}>
             <h1 className="max-w-4xl text-4xl font-semibold tracking-tight sm:text-6xl lg:text-7xl">
               Au service de l&apos;agriculture
