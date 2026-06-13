@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 
 const countries = [
   "Belgique",
@@ -43,6 +43,18 @@ const labelClasses = "block text-sm font-medium text-navy-dark";
 
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
+  const [showGdpr, setShowGdpr] = useState(false);
+
+  useEffect(() => {
+    if (!showGdpr) return;
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setShowGdpr(false);
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [showGdpr]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -199,33 +211,15 @@ export default function ContactForm() {
         <h3 className="text-base font-semibold text-navy-dark">
           Protection de vos données personnelles (RGPD)
         </h3>
-        <p className="mt-3">
-          Agrisem S.A., dont le siège est situé Rue de Villers 21, 5630
-          Cerfontaine (Belgique), agit en tant que responsable du traitement
-          des données collectées via ce formulaire.
-        </p>
         <p className="mt-2">
-          Les informations transmises (nom, prénom, adresse postale, adresse
-          e-mail, numéro de téléphone et contenu de votre message) sont
-          utilisées exclusivement pour traiter votre demande de contact et
-          vous répondre au mieux. Elles ne sont en aucun cas cédées, louées ou
-          transmises à des tiers à des fins commerciales.
-        </p>
-        <p className="mt-2">
-          Ces données sont conservées pendant la durée nécessaire au
-          traitement de votre demande et sont ensuite supprimées ou archivées
-          conformément à nos obligations légales. Conformément au Règlement
-          (UE) 2016/679 relatif à la protection des données (RGPD), vous
-          disposez d&apos;un droit d&apos;accès, de rectification, de
-          limitation, d&apos;opposition et d&apos;effacement de vos données.
-          Vous pouvez exercer ces droits à tout moment en nous écrivant à{" "}
-          <a
-            href="mailto:info@agrisem.be"
+          Vos données ne sont utilisées que pour traiter votre demande.{" "}
+          <button
+            type="button"
+            onClick={() => setShowGdpr(true)}
             className="font-medium text-navy-dark underline hover:text-gold"
           >
-            info@agrisem.be
-          </a>
-          .
+            En savoir plus
+          </button>
         </p>
 
         <label htmlFor="rgpd" className="mt-4 flex items-start gap-3">
@@ -239,11 +233,82 @@ export default function ContactForm() {
           <span>
             J&apos;accepte que les informations renseignées ci-dessus soient
             utilisées par Agrisem S.A. dans le cadre du traitement de ma
-            demande, conformément à la politique de confidentialité décrite
-            ci-dessus. <span className="text-gold">*</span>
+            demande, conformément à la politique de confidentialité.{" "}
+            <span className="text-gold">*</span>
           </span>
         </label>
       </div>
+
+      {showGdpr && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          onClick={() => setShowGdpr(false)}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="gdpr-title"
+            onClick={(event) => event.stopPropagation()}
+            className="max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-6 text-sm text-navy-dark/80 shadow-xl sm:p-8"
+          >
+            <div className="flex items-start justify-between gap-4">
+              <h3
+                id="gdpr-title"
+                className="text-lg font-semibold text-navy-dark"
+              >
+                Protection de vos données personnelles (RGPD)
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowGdpr(false)}
+                aria-label="Fermer"
+                className="shrink-0 text-2xl leading-none text-navy-dark/50 transition-colors hover:text-navy-dark"
+              >
+                ×
+              </button>
+            </div>
+
+            <p className="mt-4">
+              Agrisem S.A., dont le siège est situé Rue de Villers 21, 5630
+              Cerfontaine (Belgique), agit en tant que responsable du
+              traitement des données collectées via ce formulaire.
+            </p>
+            <p className="mt-2">
+              Les informations transmises (nom, prénom, adresse postale,
+              adresse e-mail, numéro de téléphone et contenu de votre message)
+              sont utilisées exclusivement pour traiter votre demande de
+              contact et vous répondre au mieux. Elles ne sont en aucun cas
+              cédées, louées ou transmises à des tiers à des fins
+              commerciales.
+            </p>
+            <p className="mt-2">
+              Ces données sont conservées pendant la durée nécessaire au
+              traitement de votre demande et sont ensuite supprimées ou
+              archivées conformément à nos obligations légales. Conformément
+              au Règlement (UE) 2016/679 relatif à la protection des données
+              (RGPD), vous disposez d&apos;un droit d&apos;accès, de
+              rectification, de limitation, d&apos;opposition et
+              d&apos;effacement de vos données. Vous pouvez exercer ces droits
+              à tout moment en nous écrivant à{" "}
+              <a
+                href="mailto:info@agrisem.be"
+                className="font-medium text-navy-dark underline hover:text-gold"
+              >
+                info@agrisem.be
+              </a>
+              .
+            </p>
+
+            <button
+              type="button"
+              onClick={() => setShowGdpr(false)}
+              className="mt-6 inline-flex items-center justify-center rounded-full bg-gold px-6 py-2.5 text-sm font-medium text-navy-dark transition-transform duration-300 hover:scale-105"
+            >
+              Fermer
+            </button>
+          </div>
+        </div>
+      )}
 
       {status === "error" && (
         <p className="text-sm font-medium text-red-600">
