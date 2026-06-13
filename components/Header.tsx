@@ -19,6 +19,14 @@ export default function Header() {
           <Link href="/#marques" className="transition-colors hover:text-gold">
             Nos marques
           </Link>
+          <a
+            href="https://agrimarket.be"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-gold"
+          >
+            Nos occasions
+          </a>
           <Link href="/contact" className="transition-colors hover:text-gold">
             Contact
           </Link>

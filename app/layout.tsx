@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Agrisem S.A. — Matériel agricole et de chantier",
   description:
-    "Agrisem S.A., concessionnaire à Cerfontaine pour Massey Ferguson, Merlo, Takeuchi et Giant.",
+    "Agrisem S.A., concessionnaire à Daussois pour Massey Ferguson, Merlo, Takeuchi et Giant.",
 };
 
 export default function RootLayout({

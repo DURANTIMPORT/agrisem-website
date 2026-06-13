@@ -270,7 +270,7 @@ export default function ContactForm() {
 
             <p className="mt-4">
               Agrisem S.A., dont le siège est situé Rue de Villers 21, 5630
-              Cerfontaine (Belgique), agit en tant que responsable du
+              Daussois (Belgique), agit en tant que responsable du
               traitement des données collectées via ce formulaire.
             </p>
             <p className="mt-2">

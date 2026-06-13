@@ -16,7 +16,7 @@ export default function Footer() {
               Contact
             </h4>
             <p>Rue de Villers 21</p>
-            <p>5630 Cerfontaine, Belgique</p>
+            <p>5630 Daussois, Belgique</p>
             <p className="mt-3">
               <a
                 href="tel:+3271614592"

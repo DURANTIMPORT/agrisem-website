@@ -150,7 +150,7 @@ export default function Home() {
               Une expertise au service de votre exploitation
             </h2>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-white/80">
-              Basés à Cerfontaine, nous accompagnons les professionnels de
+              Basés à Daussois, nous accompagnons les professionnels de
               l&apos;agriculture et du BTP avec des partenaires de confiance.
               Contactez-nous pour toute question sur nos produits.
             </p>
