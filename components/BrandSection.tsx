@@ -15,6 +15,7 @@ type BrandSectionProps = {
   reverse?: boolean;
   fit?: "cover" | "contain";
   video?: { mp4: string; webm: string; poster: string };
+  kenBurns?: boolean;
 };
 
 export default function BrandSection({
@@ -30,6 +31,7 @@ export default function BrandSection({
   reverse = false,
   fit = "cover",
   video,
+  kenBurns = false,
 }: BrandSectionProps) {
   return (
     <section
@@ -59,7 +61,7 @@ export default function BrandSection({
                 src={image}
                 alt={imageAlt}
                 fill
-                className="scale-110 object-cover"
+                className={`object-cover ${kenBurns ? "ken-burns" : "scale-110"}`}
                 sizes="(min-width: 1024px) 50vw, 100vw"
               />
             ) : (
