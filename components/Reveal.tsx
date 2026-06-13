@@ -30,7 +30,7 @@ export default function Reveal({
   }, []);
 
   return (
-    <div ref={ref} className={`reveal ${className}`}>
+    <div ref={ref} className={`reveal ${className}`} suppressHydrationWarning>
       {children}
     </div>
   );

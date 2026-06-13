@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import Parallax from "@/components/Parallax";
 import BrandSection from "@/components/BrandSection";
@@ -153,12 +154,12 @@ export default function Home() {
               l&apos;agriculture et du BTP avec des partenaires de confiance.
               Contactez-nous pour toute question sur nos produits.
             </p>
-            <a
-              href="#contact"
+            <Link
+              href="/contact"
               className="mt-10 inline-flex items-center justify-center rounded-full bg-gold px-8 py-4 text-base font-medium text-navy-dark transition-colors hover:bg-white"
             >
               Nous contacter
-            </a>
+            </Link>
           </Reveal>
         </div>
       </section>

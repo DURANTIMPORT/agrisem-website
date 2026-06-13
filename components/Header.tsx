@@ -16,12 +16,12 @@ export default function Header() {
           />
         </Link>
         <nav className="flex items-center gap-6 text-sm font-medium text-navy-dark">
-          <a href="#marques" className="transition-colors hover:text-gold">
+          <Link href="/#marques" className="transition-colors hover:text-gold">
             Nos marques
-          </a>
-          <a href="#contact" className="transition-colors hover:text-gold">
+          </Link>
+          <Link href="/contact" className="transition-colors hover:text-gold">
             Contact
-          </a>
+          </Link>
         </nav>
       </div>
     </header>
