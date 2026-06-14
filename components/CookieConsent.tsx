@@ -41,6 +41,18 @@ export default function CookieConsent() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [showDetails]);
 
+  // The banner is fixed to the bottom of the viewport, which can cover
+  // (and intercept clicks on) content at the bottom of the page. Push the
+  // page content up while the banner is visible.
+  useEffect(() => {
+    if (consent !== null) return;
+
+    document.body.classList.add("pb-40", "sm:pb-24");
+    return () => {
+      document.body.classList.remove("pb-40", "sm:pb-24");
+    };
+  }, [consent]);
+
   function choose(value: "accepted" | "rejected") {
     window.localStorage.setItem(STORAGE_KEY, value);
     window.dispatchEvent(new Event(CHANGE_EVENT));
