@@ -17,6 +17,11 @@ const faqItems = [
       "Oui. Notre atelier et notre équipe technique assurent l'entretien, les réparations et la fourniture de pièces détachées d'origine pour l'ensemble des marques que nous représentons.",
   },
   {
+    question: "Proposez-vous également un service de pneus ?",
+    answer:
+      "Oui, Agrisem S.A. propose la vente et le montage de tous types de pneus : pneus agricoles, pneus de chantier et pneus pour voitures, toutes marques confondues.",
+  },
+  {
     question: "Vendez-vous également du matériel d'occasion ?",
     answer:
       "Oui, retrouvez notre sélection de matériel d'occasion sur agrimarket.be, accessible directement depuis l'onglet « Nos occasions » de notre site.",
