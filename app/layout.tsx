@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CookieConsent from "@/components/CookieConsent";
+import { BUSINESS, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site-config";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,10 +17,84 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const TITLE = `${SITE_NAME} — Matériel agricole et de chantier`;
+const OG_IMAGE = "/brands/massey-ferguson-poster.jpg";
+
 export const metadata: Metadata = {
-  title: "Agrisem S.A. — Matériel agricole et de chantier",
-  description:
-    "Agrisem S.A., concessionnaire à Daussois pour Massey Ferguson, Merlo, Takeuchi et Giant.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: TITLE,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  keywords: [
+    "Agrisem",
+    "matériel agricole Belgique",
+    "Massey Ferguson Belgique",
+    "Merlo chargeur télescopique",
+    "Kuhn matériel agricole",
+    "Takeuchi mini-pelle",
+    "Giant chargeur compact",
+    "concessionnaire agricole Daussois",
+    "matériel de chantier Belgique",
+  ],
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "fr_BE",
+    url: "/",
+    siteName: SITE_NAME,
+    title: TITLE,
+    description: SITE_DESCRIPTION,
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1920,
+        height: 1080,
+        alt: `${SITE_NAME} — matériel agricole et de chantier`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: SITE_DESCRIPTION,
+    images: [OG_IMAGE],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#122a4d",
+};
+
+const localBusinessJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": SITE_URL,
+  name: BUSINESS.name,
+  url: SITE_URL,
+  image: `${SITE_URL}/logo.jpg`,
+  logo: `${SITE_URL}/logo.jpg`,
+  description: SITE_DESCRIPTION,
+  telephone: BUSINESS.telephone,
+  email: BUSINESS.email,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: BUSINESS.streetAddress,
+    postalCode: BUSINESS.postalCode,
+    addressLocality: BUSINESS.addressLocality,
+    addressCountry: BUSINESS.addressCountry,
+  },
 };
 
 export default function RootLayout({
@@ -33,6 +108,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+        />
         <Script id="reveal-fallback" strategy="beforeInteractive">
           {`
             (function () {

@@ -1,4 +1,22 @@
+import type { Metadata } from "next";
 import ContactForm from "@/components/ContactForm";
+import { SITE_NAME } from "@/lib/site-config";
+
+const DESCRIPTION =
+  "Contactez Agrisem S.A. à Daussois (Belgique) pour vos demandes de devis, pièces détachées ou service après-vente sur les marques Massey Ferguson, Merlo, Kuhn, Takeuchi et Giant.";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description: DESCRIPTION,
+  alternates: {
+    canonical: "/contact",
+  },
+  openGraph: {
+    title: `Contact | ${SITE_NAME}`,
+    description: DESCRIPTION,
+    url: "/contact",
+  },
+};
 
 export default function ContactPage() {
   return (
