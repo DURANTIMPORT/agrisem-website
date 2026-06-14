@@ -34,7 +34,12 @@ export default function ContactPage() {
 
       <section className="px-6 py-16 sm:py-24">
         <div className="mx-auto max-w-3xl">
-          <ContactForm />
+          <h2 className="text-2xl font-semibold tracking-tight text-navy-dark">
+            Formulaire de contact
+          </h2>
+          <div className="mt-8">
+            <ContactForm />
+          </div>
         </div>
       </section>
     </main>

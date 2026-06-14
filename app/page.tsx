@@ -3,6 +3,7 @@ import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import Parallax from "@/components/Parallax";
 import BrandSection from "@/components/BrandSection";
+import Faq from "@/components/Faq";
 
 const brands = [
   {
@@ -141,6 +142,9 @@ export default function Home() {
           <BrandSection key={brand.name} {...brand} />
         ))}
       </div>
+
+      {/* FAQ */}
+      <Faq />
 
       {/* About / strip */}
       <section className="bg-navy text-white">

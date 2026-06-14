@@ -16,6 +16,9 @@ export default function Header() {
           />
         </Link>
         <nav className="flex items-center gap-6 text-sm font-medium text-navy-dark">
+          <Link href="/a-propos" className="transition-colors hover:text-gold">
+            À propos
+          </Link>
           <Link href="/#marques" className="transition-colors hover:text-gold">
             Nos marques
           </Link>

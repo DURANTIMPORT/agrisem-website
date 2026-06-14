@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site-config";
 
-// Crawlers utilisés par les assistants/IA (GEO) que l'on autorise
+// Crawlers de recherche et d'assistants IA (GEO) que l'on autorise
 // explicitement, en plus de la règle générale ci-dessous.
 const AI_CRAWLERS = [
+  "Googlebot",
   "GPTBot",
   "ChatGPT-User",
   "OAI-SearchBot",

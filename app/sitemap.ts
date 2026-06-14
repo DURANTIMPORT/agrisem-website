@@ -17,5 +17,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.8,
     },
+    {
+      url: `${SITE_URL}/a-propos`,
+      lastModified,
+      changeFrequency: "yearly",
+      priority: 0.7,
+    },
   ];
 }
