@@ -16,7 +16,7 @@ type BrandSectionProps = {
   fit?: "cover" | "contain";
   video?: { mp4: string; webm: string; poster: string };
   kenBurns?: boolean;
-  logo?: { src: string; width: number; height: number };
+  logo?: { src: string; width: number; height: number; className?: string };
 };
 
 export default function BrandSection({
@@ -94,7 +94,9 @@ export default function BrandSection({
                 alt={name}
                 width={logo.width}
                 height={logo.height}
-                className="h-14 w-auto sm:h-20 lg:h-24"
+                className={
+                  logo.className ?? "h-14 w-auto max-w-full sm:h-20 lg:h-24"
+                }
               />
             ) : (
               name

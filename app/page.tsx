@@ -41,6 +41,12 @@ const brands = [
     fg: "text-white",
     accent: "#9ed83b",
     reverse: true,
+    logo: {
+      src: "/brands/merlo-logo.png",
+      width: 1838,
+      height: 250,
+      className: "h-8 w-auto max-w-full sm:h-10 lg:h-12",
+    },
     video: {
       mp4: "/brands/merlo-hero.mp4",
       webm: "/brands/merlo-hero.webm",
@@ -58,6 +64,11 @@ const brands = [
     bg: "bg-[#fdf3e7]",
     fg: "text-navy-dark",
     accent: "#e9531e",
+    logo: {
+      src: "/brands/kuhn-logo.png",
+      width: 552,
+      height: 291,
+    },
     video: {
       mp4: "/brands/kuhn-hero.mp4",
       webm: "/brands/kuhn-hero.webm",
@@ -76,6 +87,12 @@ const brands = [
     fg: "text-white",
     accent: "#e7161e",
     reverse: true,
+    logo: {
+      src: "/brands/takeuchi-logo.png",
+      width: 600,
+      height: 72,
+      className: "h-8 w-auto max-w-full sm:h-10 lg:h-12",
+    },
     video: {
       mp4: "/brands/takeuchi-hero.mp4",
       webm: "/brands/takeuchi-hero.webm",
