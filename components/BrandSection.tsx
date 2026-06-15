@@ -89,8 +89,7 @@ export default function BrandSection({
           </span>
           <h2 className="mt-4 text-5xl font-semibold tracking-tight sm:text-6xl lg:text-7xl">
             {logo ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 src={logo.src}
                 alt={name}
                 width={logo.width}

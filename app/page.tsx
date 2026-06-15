@@ -19,9 +19,9 @@ const brands = [
     accent: "#e2231a",
     fit: "contain" as const,
     logo: {
-      src: "/brands/massey-ferguson-logo.svg",
-      width: 473,
-      height: 219,
+      src: "/brands/massey-ferguson-logo.png",
+      width: 1525,
+      height: 704,
     },
     video: {
       mp4: "/brands/mf9s-hero.mp4",
