@@ -111,6 +111,12 @@ const brands = [
     fg: "text-white",
     accent: "#f3a93b",
     reverse: true,
+    logo: {
+      src: "/brands/giant-logo.png",
+      width: 1280,
+      height: 1251,
+      className: "h-20 w-auto max-w-full sm:h-28 lg:h-36",
+    },
   },
 ];
 
