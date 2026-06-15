@@ -117,6 +117,11 @@ const brands = [
       height: 1251,
       className: "h-20 w-auto max-w-full sm:h-28 lg:h-36",
     },
+    video: {
+      mp4: "/brands/giant-hero.mp4",
+      webm: "/brands/giant-hero.webm",
+      poster: "/brands/giant-poster.jpg",
+    },
   },
 ];
 
