@@ -18,6 +18,11 @@ const brands = [
     fg: "text-white",
     accent: "#e2231a",
     fit: "contain" as const,
+    logo: {
+      src: "/brands/massey-ferguson-logo.svg",
+      width: 473,
+      height: 219,
+    },
     video: {
       mp4: "/brands/mf9s-hero.mp4",
       webm: "/brands/mf9s-hero.webm",

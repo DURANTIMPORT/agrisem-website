@@ -16,6 +16,7 @@ type BrandSectionProps = {
   fit?: "cover" | "contain";
   video?: { mp4: string; webm: string; poster: string };
   kenBurns?: boolean;
+  logo?: { src: string; width: number; height: number };
 };
 
 export default function BrandSection({
@@ -32,6 +33,7 @@ export default function BrandSection({
   fit = "cover",
   video,
   kenBurns = false,
+  logo,
 }: BrandSectionProps) {
   return (
     <section
@@ -86,7 +88,18 @@ export default function BrandSection({
             {tagline}
           </span>
           <h2 className="mt-4 text-5xl font-semibold tracking-tight sm:text-6xl lg:text-7xl">
-            {name}
+            {logo ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={logo.src}
+                alt={name}
+                width={logo.width}
+                height={logo.height}
+                className="h-14 w-auto sm:h-20 lg:h-24"
+              />
+            ) : (
+              name
+            )}
           </h2>
           <p className="mt-6 max-w-md text-lg opacity-80">{description}</p>
           <a
