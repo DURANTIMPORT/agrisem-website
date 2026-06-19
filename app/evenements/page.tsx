@@ -74,7 +74,7 @@ export default function EvenementsPage() {
                   <p>
                     Agrisem S.A. sera présent à la{" "}
                     <a
-                      href="https://www.foiresdelibramont.be"
+                      href="https://www.foiresdelibramont.com"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="font-medium text-navy-dark underline hover:text-gold"
