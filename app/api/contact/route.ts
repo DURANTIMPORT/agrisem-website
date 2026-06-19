@@ -1,7 +1,7 @@
 import { Resend } from "resend";
 
 const RECIPIENT = "info@agrisem.be";
-const FROM = process.env.RESEND_FROM ?? "Agrisem S.A. <onboarding@resend.dev>";
+const FROM = "Agrisem S.A. <noreply@agrisem.be>";
 
 type ContactPayload = {
   prenom?: string;
