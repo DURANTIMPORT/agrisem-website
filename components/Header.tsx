@@ -33,6 +33,9 @@ export default function Header() {
           >
             Nos occasions
           </a>
+          <Link href="/evenements" className="transition-colors hover:text-gold">
+            Événements
+          </Link>
           <Link href="/contact" className="transition-colors hover:text-gold">
             Contact
           </Link>
