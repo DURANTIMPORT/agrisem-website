@@ -5,6 +5,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CookieConsent from "@/components/CookieConsent";
+import Analytics from "@/components/Analytics";
 import { BUSINESS, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site-config";
 
 const geistSans = Geist({
@@ -149,6 +150,7 @@ export default function RootLayout({
         {children}
         <Footer />
         <CookieConsent />
+        <Analytics />
       </body>
     </html>
   );
