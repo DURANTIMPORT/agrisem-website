@@ -1,7 +1,55 @@
 import type { NextConfig } from "next";
 
+const securityHeaders = [
+  // Empêche l'intégration du site dans un iframe
+  { key: "X-Frame-Options", value: "DENY" },
+
+  // Empêche le sniffing de type MIME
+  { key: "X-Content-Type-Options", value: "nosniff" },
+
+  // Envoie l'origine uniquement sur les requêtes cross-origin
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+
+  // Désactive les capteurs sensibles
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+
+  {
+    key: "Content-Security-Policy",
+    value: [
+      "default-src 'none'",
+      // Chunks Next.js + scripts inline (reveal-fallback, hydratation) + GA4
+      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com",
+      // Tailwind + attributs style inline (couleurs d'accent par marque)
+      "style-src 'self' 'unsafe-inline'",
+      // Images optimisées via /_next/image + pixel GA4
+      "img-src 'self' data: https://www.google-analytics.com",
+      // next/font/google auto-héberge au build → même origine uniquement
+      "font-src 'self'",
+      // fetch('/api/contact') same-origin ; balises GA4 vers ces domaines
+      "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net",
+      // Vidéos hero servies depuis /brands/*.mp4 et .webm
+      "media-src 'self'",
+      // Pas d'iframe sur ce site
+      "frame-src 'none'",
+      // Pas de plugins (<object>, <embed>)
+      "object-src 'none'",
+      // Protège contre l'injection de balise <base>
+      "base-uri 'self'",
+      // Soumission de formulaire uniquement vers /api/contact (même origine)
+      "form-action 'self'",
+    ].join("; "),
+  },
+];
+
 const nextConfig: NextConfig = {
-  /* config options here */
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: securityHeaders,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
