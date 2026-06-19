@@ -46,7 +46,7 @@ export default function EvenementsPage() {
                   alt="Foire de Libramont — 100 ans"
                   width={1772}
                   height={1772}
-                  className="h-32 w-32 object-contain"
+                  className="h-44 w-44 object-contain"
                 />
                 <div className="text-center">
                   <p className="text-xs font-semibold uppercase tracking-widest text-white">
