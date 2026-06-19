@@ -126,8 +126,7 @@ export default function AboutPage() {
               Basés Rue de Villers 21 à 5630 Daussois, en Belgique, nous
               intervenons auprès des professionnels de l&apos;agriculture, de
               l&apos;élevage, des espaces verts et de la construction dans
-              toute la province de Namur et les régions limitrophes,
-              notamment le Hainaut et le nord de la France. Notre atelier et
+              les provinces de Namur et du Hainaut, ainsi que le nord de la France. Notre atelier et
               notre équipe technique se déplacent également chez vous pour
               l&apos;entretien et les réparations.
             </p>
