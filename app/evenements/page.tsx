@@ -72,9 +72,17 @@ export default function EvenementsPage() {
 
                 <div className="mt-5 space-y-3 text-navy-dark/80">
                   <p>
-                    Agrisem S.A. sera présent à la Foire de Libramont, le plus
-                    grand salon agricole de Wallonie et l&apos;un des plus importants
-                    d&apos;Europe, qui célèbre cette année son{" "}
+                    Agrisem S.A. sera présent à la{" "}
+                    <a
+                      href="https://www.foiresdelibramont.be"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-medium text-navy-dark underline hover:text-gold"
+                    >
+                      Foire de Libramont
+                    </a>
+                    , le plus grand salon agricole de Wallonie et l&apos;un des
+                    plus importants d&apos;Europe, qui célèbre cette année son{" "}
                     <strong className="font-semibold text-navy-dark">
                       100e anniversaire
                     </strong>.
