@@ -43,6 +43,7 @@ const labelClasses = "block text-sm font-medium text-navy-dark";
 
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const [showGdpr, setShowGdpr] = useState(false);
 
   useEffect(() => {
@@ -72,6 +73,7 @@ export default function ContactForm() {
       telephone: data.get("telephone"),
       message: data.get("message"),
       rgpd: data.get("rgpd") === "on",
+      website: data.get("website"), // honeypot
     };
 
     try {
@@ -81,11 +83,19 @@ export default function ContactForm() {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) throw new Error("Request failed");
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(
+          (body as { error?: string }).error ?? "Erreur inconnue."
+        );
+      }
 
       setStatus("success");
       form.reset();
-    } catch {
+    } catch (err) {
+      setErrorMessage(
+        err instanceof Error ? err.message : "Une erreur est survenue."
+      );
       setStatus("error");
     }
   }
@@ -106,6 +116,18 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
+      {/* Honeypot : caché aux humains, rempli par les bots → rejeté côté serveur */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", height: 0, overflow: "hidden" }}>
+        <label htmlFor="website">Site web</label>
+        <input
+          type="text"
+          id="website"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
           <label htmlFor="prenom" className={labelClasses}>
@@ -312,7 +334,7 @@ export default function ContactForm() {
 
       {status === "error" && (
         <p className="text-sm font-medium text-red-600">
-          Une erreur est survenue lors de l&apos;envoi de votre message.
+          {errorMessage || "Une erreur est survenue lors de l’envoi de votre message."}{" "}
           Merci de réessayer ou de nous contacter directement par téléphone.
         </p>
       )}
