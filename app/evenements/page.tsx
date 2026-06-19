@@ -28,7 +28,7 @@ export default function EvenementsPage() {
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-white/80">
           Retrouvez-nous sur les foires et salons de la région pour
-          découvrir nos machines en démonstration et rencontrer notre équipe.
+          découvrir notre gamme et rencontrer notre équipe.
         </p>
       </section>
 
