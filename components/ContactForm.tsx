@@ -71,6 +71,7 @@ export default function ContactForm() {
       pays: data.get("pays"),
       email: data.get("email"),
       telephone: data.get("telephone"),
+      sujet: data.get("sujet"),
       message: data.get("message"),
       rgpd: data.get("rgpd") === "on",
       website: data.get("website"), // honeypot
@@ -213,6 +214,25 @@ export default function ContactForm() {
             className={inputClasses}
           />
         </div>
+      </div>
+
+      <div>
+        <label htmlFor="sujet" className={labelClasses}>
+          Objet de votre demande <span className="text-gold">*</span>
+        </label>
+        <select
+          id="sujet"
+          name="sujet"
+          required
+          defaultValue=""
+          className={inputClasses}
+        >
+          <option value="" disabled>Sélectionnez un objet…</option>
+          <option value="Service commercial">Service commercial</option>
+          <option value="SAV & Pièces détachées">SAV &amp; Pièces détachées</option>
+          <option value="Comptabilité">Comptabilité</option>
+          <option value="Autre demande">Autre demande</option>
+        </select>
       </div>
 
       <div>

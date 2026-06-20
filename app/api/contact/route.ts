@@ -1,7 +1,13 @@
 import { Resend } from "resend";
 
-const RECIPIENT = "info@agrisem.be";
 const FROM = "Agrisem S.A. <noreply@agrisem.be>";
+
+const RECIPIENTS: Record<string, string> = {
+  "Service commercial": "l.francois@agrisem.be",
+  "SAV & Pièces détachées": "info@agrisem.be",
+  "Comptabilité": "compta@durantimport.com",
+  "Autre demande": "M.MASTALERZ@durantimport.com",
+};
 
 // Sliding-window rate limiter (in-memory — resets on cold start, fine for a
 // low-traffic contact form; upgrade to Vercel KV if needed).
@@ -28,6 +34,7 @@ type ContactPayload = {
   pays?: string;
   email?: string;
   telephone?: string;
+  sujet?: string;
   message?: string;
   rgpd?: boolean;
   website?: string; // honeypot — doit rester vide
@@ -41,6 +48,7 @@ function isValid(data: ContactPayload) {
       data.pays?.trim() &&
       data.email?.trim() &&
       data.telephone?.trim() &&
+      data.sujet?.trim() &&
       data.message?.trim() &&
       data.rgpd === true
   );
@@ -71,15 +79,17 @@ export async function POST(request: Request) {
     );
   }
 
+  const recipient = RECIPIENTS[data.sujet!] ?? "info@agrisem.be";
   const resend = new Resend(process.env.RESEND_API_KEY);
 
   try {
     const { error } = await resend.emails.send({
       from: FROM,
-      to: RECIPIENT,
+      to: recipient,
       replyTo: data.email,
-      subject: `Nouvelle demande de contact - ${data.prenom} ${data.nom}`,
+      subject: `[${data.sujet}] Nouvelle demande - ${data.prenom} ${data.nom}`,
       text: [
+        `Objet : ${data.sujet}`,
         `Prénom : ${data.prenom}`,
         `Nom : ${data.nom}`,
         `Code postal : ${data.codePostal}`,
