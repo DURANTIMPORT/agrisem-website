@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { currentUser } from "@clerk/nextjs/server";
 import { roleFromUser } from "@/lib/pro/roles";
 
@@ -5,13 +6,15 @@ type Tuile = {
   titre: string;
   description: string;
   bientot: boolean;
+  href?: string;
 };
 
 const TUILES_COMMERCIAL: Tuile[] = [
   {
     titre: "Calculateur de remises",
     description: "Prix net concessionnaire par modèle Massey Ferguson.",
-    bientot: true,
+    bientot: false,
+    href: "/pro/calculateur",
   },
 ];
 
@@ -58,26 +61,44 @@ export default async function ProHomePage() {
       </div>
 
       <div className="space-y-3">
-        {tuiles.map((tuile) => (
-          <div
-            key={tuile.titre}
-            className="flex items-start justify-between gap-3 rounded-xl border border-black/10 bg-white p-4 shadow-sm"
-          >
-            <div>
-              <h2 className="text-base font-semibold text-navy-dark">
-                {tuile.titre}
-              </h2>
-              <p className="mt-0.5 text-sm text-navy-dark/60">
-                {tuile.description}
-              </p>
+        {tuiles.map((tuile) => {
+          const contenu = (
+            <>
+              <div>
+                <h2 className="text-base font-semibold text-navy-dark">
+                  {tuile.titre}
+                </h2>
+                <p className="mt-0.5 text-sm text-navy-dark/60">
+                  {tuile.description}
+                </p>
+              </div>
+              {tuile.bientot ? (
+                <span className="shrink-0 rounded-full bg-black/5 px-2.5 py-1 text-xs font-medium text-navy-dark/50">
+                  Bientôt
+                </span>
+              ) : tuile.href ? (
+                <span className="shrink-0 text-navy-dark/30">›</span>
+              ) : null}
+            </>
+          );
+
+          const classes =
+            "flex items-start justify-between gap-3 rounded-xl border border-black/10 bg-white p-4 shadow-sm";
+
+          return tuile.href ? (
+            <Link
+              key={tuile.titre}
+              href={tuile.href}
+              className={`${classes} transition-colors hover:border-gold`}
+            >
+              {contenu}
+            </Link>
+          ) : (
+            <div key={tuile.titre} className={classes}>
+              {contenu}
             </div>
-            {tuile.bientot && (
-              <span className="shrink-0 rounded-full bg-black/5 px-2.5 py-1 text-xs font-medium text-navy-dark/50">
-                Bientôt
-              </span>
-            )}
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {role === "commercial" && (
