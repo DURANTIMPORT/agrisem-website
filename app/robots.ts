@@ -26,10 +26,12 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
+        disallow: "/pro/",
       },
       ...AI_CRAWLERS.map((userAgent) => ({
         userAgent,
         allow: "/",
+        disallow: "/pro/",
       })),
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
