@@ -3,8 +3,7 @@ import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import { SiteHeader, SiteFooter } from "@/components/SiteChrome";
 import CookieConsent from "@/components/CookieConsent";
 import Analytics from "@/components/Analytics";
 import { BUSINESS, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site-config";
@@ -148,9 +147,9 @@ export default function RootLayout({
           })();
           `}
           </Script>
-          <Header />
+          <SiteHeader />
           {children}
-          <Footer />
+          <SiteFooter />
           <CookieConsent />
           <Analytics />
         </ClerkProvider>
