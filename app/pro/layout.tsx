@@ -18,7 +18,15 @@ export default function ProLayout({
           <span className="text-[#C71121]">AGRISEM</span>
           <span className="text-white/50"> · Espace Pro</span>
         </Link>
-        <UserButton />
+        <div className="flex items-center gap-4">
+          <Link
+            href="/"
+            className="text-xs text-white/60 transition-colors hover:text-[#C71121]"
+          >
+            ← Site Agrisem
+          </Link>
+          <UserButton />
+        </div>
       </header>
       <main className="flex-1 px-4 py-6">{children}</main>
     </div>
