@@ -39,6 +39,12 @@ export default function Header() {
           <Link href="/contact" className="transition-colors hover:text-gold">
             Contact
           </Link>
+          <Link
+            href="/pro"
+            className="ml-1 rounded-full border border-navy-dark/20 px-3 py-1 text-xs text-navy-dark/60 transition-colors hover:border-gold hover:text-gold"
+          >
+            Espace Pro
+          </Link>
         </nav>
       </div>
     </header>

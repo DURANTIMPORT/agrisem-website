@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 export default function Footer() {
   return (
     <footer id="contact" className="bg-navy-dark text-white">
@@ -37,11 +35,8 @@ export default function Footer() {
             </p>
           </div>
         </div>
-        <div className="mt-12 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between">
-          <span>© {new Date().getFullYear()} Agrisem S.A. — Tous droits réservés.</span>
-          <Link href="/pro" className="transition-colors hover:text-gold">
-            Espace Pro
-          </Link>
+        <div className="mt-12 border-t border-white/10 pt-6 text-xs text-white/50">
+          © {new Date().getFullYear()} Agrisem S.A. — Tous droits réservés.
         </div>
       </div>
     </footer>
