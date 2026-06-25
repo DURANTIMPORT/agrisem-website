@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 // Couleurs MF (charte) : noir #000002, rouge #C71121
 import { currentUser } from "@clerk/nextjs/server";
 import { roleFromUser } from "@/lib/pro/roles";
@@ -117,6 +118,16 @@ export default async function ProHomePage() {
           modification.
         </p>
       )}
+
+      <div className="flex justify-center pt-6">
+        <Image
+          src="/brands/mf-logo-full.png"
+          alt="Massey Ferguson"
+          width={526}
+          height={306}
+          className="h-auto w-40 opacity-90"
+        />
+      </div>
     </div>
   );
 }
