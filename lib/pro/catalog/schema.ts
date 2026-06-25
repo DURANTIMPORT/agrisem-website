@@ -46,8 +46,9 @@ export const SCHEMA_STATEMENTS: string[] = [
    )`,
   // Pour les bases déjà créées sans la colonne source :
   `ALTER TABLE machines_stock ADD COLUMN IF NOT EXISTS source TEXT NOT NULL DEFAULT 'seed'`,
-  // Le prix peut être absent (machines de démo « sur demande ») :
+  // Le prix et le PO peuvent être absents (machines de démo « sur demande ») :
   `ALTER TABLE machines_stock ALTER COLUMN prix_brut DROP NOT NULL`,
+  `ALTER TABLE machines_stock ALTER COLUMN po DROP NOT NULL`,
   `CREATE TABLE IF NOT EXISTS settings (
      cle     TEXT PRIMARY KEY,
      valeur  TEXT NOT NULL
