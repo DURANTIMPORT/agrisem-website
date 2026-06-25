@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { currentUser } from "@clerk/nextjs/server";
 import {
   getGammes,
   getGamme,
@@ -12,6 +13,9 @@ import {
   stockModele,
 } from "@/lib/pro/catalog";
 import type { Modele, SousNiveau } from "@/lib/pro/catalog";
+import { roleFromUser } from "@/lib/pro/roles";
+import { margeVisibleCommercial } from "@/lib/pro/settings";
+import FicheCalcul from "@/components/pro/FicheCalcul";
 
 const BASE = "/pro/calculateur";
 
@@ -201,11 +205,15 @@ export default async function CalculateurPage({
     );
   }
 
-  // ── Fiche modèle (le calcul arrive en Phase 2) ──────────────────────
+  // ── Fiche modèle + calcul ───────────────────────────────────────────
   if (path.length === 3) {
     const modele = getModele(sn, path[2]);
     if (!modele) notFound();
     const sauteSn = sauterSousNiveau(gamme);
+
+    // Visibilité de la marge décidée CÔTÉ SERVEUR (jamais masquée seulement en CSS).
+    const role = roleFromUser(await currentUser());
+    const margeVisible = role === "admin" || (await margeVisibleCommercial());
 
     return (
       <div className="mx-auto max-w-md">
@@ -232,42 +240,7 @@ export default async function CalculateurPage({
           </p>
         )}
 
-        <h2 className="mt-6 mb-3 text-sm font-semibold uppercase tracking-wider text-navy-dark/60">
-          {modele.stock.length > 0
-            ? `En stock (${modele.stock.length})`
-            : "Aucune machine en stock"}
-        </h2>
-
-        {modele.stock.length > 0 ? (
-          <div className="space-y-3">
-            {modele.stock.map((machine) => (
-              <div
-                key={machine.po}
-                className="rounded-xl border border-black/10 bg-white p-4 shadow-sm"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-gold">
-                    PO {machine.po}
-                  </span>
-                  <span className="font-semibold text-navy-dark">
-                    {eur(machine.prixBrut)}
-                  </span>
-                </div>
-                <p className="mt-1 text-sm text-navy-dark/60">
-                  {machine.config}
-                </p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="rounded-xl border border-dashed border-black/15 bg-white/50 p-4 text-sm text-navy-dark/50">
-            Ce modèle est disponible sur commande.
-          </p>
-        )}
-
-        <p className="mt-6 rounded-xl bg-navy/5 p-4 text-center text-sm text-navy-dark/50">
-          Le calcul du prix net concessionnaire arrive en Phase 2.
-        </p>
+        <FicheCalcul modele={modele} margeVisible={margeVisible} />
       </div>
     );
   }
