@@ -9,11 +9,16 @@ Extrais CHAQUE machine présente dans la liste. Réponds UNIQUEMENT avec un obje
 JSON valide, sans aucun texte autour, exactement au format :
 {"machines":[{"modele":"7S.165 EXC","po":"9388","prixBrut":215380,"config":"650/65 R42 WF · RTK+96"}]}
 
+Le tableau a notamment ces colonnes : "Machine", "Pneus / Banden",
+"Options", "Configuration", "Price", "Production".
+
 Règles :
-- "modele" : désignation du modèle (ex. "7S.165", "5S.125 EXC", "TH.7038 EFF").
-- "po" : numéro de PO / commande, en chaîne.
-- "prixBrut" : prix brut en euros, NOMBRE ENTIER, sans symbole ni séparateur de milliers.
-- "config" : résumé court (pneus, options, guidage…).
+- "modele" : colonne "Machine" (ex. "7S.165 EXC", "5S.125 D6", "TH.7038 EFF").
+- "po" : numéro de PO / commande s'il figure (sinon null).
+- "prixBrut" : valeur de la colonne "Price", en euros. ⚠️ Le PDF utilise le
+  POINT comme séparateur de milliers : "33.338 €" vaut 33338. Convertis en
+  NOMBRE ENTIER (sans symbole, sans point). Si la colonne Price est vide, null.
+- "config" : résumé court combinant pneus + options + configuration + guidage.
 - N'invente aucune donnée. Si une valeur est absente, mets null.
 - Ignore les lignes de total, d'en-tête ou non pertinentes.`;
 
