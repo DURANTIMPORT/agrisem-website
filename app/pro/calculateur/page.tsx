@@ -5,7 +5,7 @@ import { margeVisibleCommercial } from "@/lib/pro/settings";
 import Calculateur from "@/components/pro/Calculateur";
 
 export default async function CalculateurPage() {
-  const gammes = getGammes();
+  const gammes = await getGammes();
 
   // Visibilité de la marge décidée CÔTÉ SERVEUR (jamais masquée seulement en CSS).
   const role = roleFromUser(await currentUser());
