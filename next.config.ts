@@ -45,6 +45,10 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Les PDF MF (jusqu'à ~1,5 Mo) sont envoyés à une server action pour l'import.
+  experimental: {
+    serverActions: { bodySizeLimit: "8mb" },
+  },
   async headers() {
     return [
       {

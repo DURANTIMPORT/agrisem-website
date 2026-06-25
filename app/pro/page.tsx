@@ -22,7 +22,8 @@ const TUILES_ADMIN: Tuile[] = [
   {
     titre: "Import des grilles (PDF)",
     description: "Mettre à jour remises et stock depuis les PDF MF.",
-    bientot: true,
+    bientot: false,
+    href: "/pro/import",
   },
   {
     titre: "Équipe",
