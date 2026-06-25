@@ -16,3 +16,8 @@ export function roleFromUser(user: ClerkUser): ProRole {
 export async function getProRole(): Promise<ProRole> {
   return roleFromUser(await currentUser());
 }
+
+/** Vrai si l'utilisateur connecté est admin (à vérifier sur chaque action sensible). */
+export async function isAdmin(): Promise<boolean> {
+  return (await getProRole()) === "admin";
+}

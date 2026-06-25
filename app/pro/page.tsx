@@ -27,7 +27,8 @@ const TUILES_ADMIN: Tuile[] = [
   {
     titre: "Équipe",
     description: "Inviter ou retirer un commercial.",
-    bientot: true,
+    bientot: false,
+    href: "/pro/equipe",
   },
   {
     titre: "Paramètres",
