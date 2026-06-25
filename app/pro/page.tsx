@@ -34,7 +34,8 @@ const TUILES_ADMIN: Tuile[] = [
   {
     titre: "Paramètres",
     description: "Affichage de la marge, réglages de l'espace.",
-    bientot: true,
+    bientot: false,
+    href: "/pro/parametres",
   },
 ];
 
