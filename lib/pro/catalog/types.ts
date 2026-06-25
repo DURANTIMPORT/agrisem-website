@@ -1,24 +1,16 @@
 // Modèle de données du catalogue Massey Ferguson (espace /pro).
-// Cf. docs/pro-architecture.md §3. Pour l'instant alimenté par un jeu de
-// données d'exemple (seed.ts) ; sera remplacé par Neon Postgres derrière la
-// même interface (lib/pro/catalog/index.ts) en restant compatible.
+// Aligné sur le prototype validé (simulateur_remises_mf). Cf. docs/pro-architecture.md.
+// Alimenté pour l'instant par seed.ts ; remplaçable par Neon derrière la même forme.
 
-export type RegimeRemise = "stock" | "commande";
 export type TypeEtape = "pct" | "eur";
 export type ConditionEtape = "mfguide" | "chargeur";
 
-/** Une étape de remise = une colonne du PDF, appliquée dans l'ordre. */
+/** Une étape de remise, appliquée dans l'ordre sur le prix brut. */
 export interface EtapeRemise {
   type: TypeEtape; // pct = pourcentage, eur = montant fixe
   valeur: number;
   label: string;
-  conditionnel?: ConditionEtape; // appliquée seulement si cochée
-}
-
-/** Grille de remises pour un régime donné (stock ≠ nouvelle commande). */
-export interface GrilleRemise {
-  regime: RegimeRemise;
-  etapes: EtapeRemise[];
+  conditionnel?: ConditionEtape; // appliquée seulement si l'équipement est coché
 }
 
 /** Machine physique réellement en stock, rattachée à un modèle. */
@@ -29,25 +21,27 @@ export interface MachineStock {
 }
 
 export interface Modele {
-  nom: string; // ex. "7S.165"
-  slug: string; // ex. "7s-165"
-  prixRetailMf?: number; // prix retail fourni par MF (badge "PRIX MF")
-  grilles: GrilleRemise[];
+  nom: string; // ex. "7S.165 EXC"
+  etapes: EtapeRemise[]; // grille de remises du modèle
+  brutIndicatif?: number; // prix brut indicatif (mode « configurer en neuf »)
+  prixRetailMf?: number; // prix retail fourni par MF (badge « PRIX MF »)
   stock: MachineStock[];
 }
 
 export type TypeSousNiveau = "transmission" | "sous_serie" | "aucun";
 
 export interface SousNiveau {
-  nom: string; // ex. "Dyna-VT", "1M", ou "Standard"
-  slug: string; // ex. "dyna-vt", "1m", "tous"
+  key: string; // identifiant court (d4, vt, 1, vi, _…)
+  label: string; // ex. "Dyna-VT", "Série 1 · 1M / 1E", "" si aucun
   type: TypeSousNiveau;
   modeles: Modele[];
 }
 
 export interface Gamme {
-  nom: string; // ex. "7S"
-  slug: string; // ex. "7s"
-  ordre: number; // ordre imposé (fréquence de vente, pas alphabétique)
+  key: string; // ex. "7S"
+  label: string; // ex. "7S"
+  desc: string; // ex. "Forte puissance"
+  ordre: number; // ordre imposé (fréquence de vente)
+  labelSousNiveau: string | null; // "Transmission" | "Sous-série" | null
   sousNiveaux: SousNiveau[];
 }

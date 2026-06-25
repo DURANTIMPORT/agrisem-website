@@ -55,7 +55,7 @@ export default async function ProHomePage() {
         <h1 className="mt-1 text-2xl font-semibold text-navy-dark">
           Espace Pro Agrisem
         </h1>
-        <span className="mt-2 inline-block rounded-full bg-gold px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy-dark">
+        <span className="mt-2 inline-block rounded-full bg-[#C71121] px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white">
           {role === "admin" ? "Administrateur" : "Commercial"}
         </span>
       </div>
@@ -89,7 +89,7 @@ export default async function ProHomePage() {
             <Link
               key={tuile.titre}
               href={tuile.href}
-              className={`${classes} transition-colors hover:border-gold`}
+              className={`${classes} transition-colors hover:border-[#C71121]`}
             >
               {contenu}
             </Link>
