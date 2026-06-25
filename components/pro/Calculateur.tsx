@@ -9,6 +9,29 @@ const fmt = (n: number | null | undefined) =>
     ? "—"
     : Math.round(n).toLocaleString("fr-BE") + " €";
 
+// Pastilles de disponibilité : vert = stock neuf, rouge = démo.
+function Pastilles({ neuf, demo, compact }: { neuf: number; demo: number; compact?: boolean }) {
+  const s = compact ? { margin: 0 } : undefined;
+  if (neuf === 0 && demo === 0)
+    return <span className="stk0" style={s}>Sur commande</span>;
+  return (
+    <>
+      {neuf > 0 && (
+        <span className="stk" style={s}>
+          <span className="dot" />
+          {neuf}{compact ? "" : " en stock"}
+        </span>
+      )}
+      {demo > 0 && (
+        <span className="stkd" style={s}>
+          <span className="dot" />
+          {demo}{compact ? "" : " démo"}
+        </span>
+      )}
+    </>
+  );
+}
+
 export default function Calculateur({
   gammes,
   margeVisible,
@@ -19,7 +42,7 @@ export default function Calculateur({
   const [gammeKey, setGammeKey] = useState<string | null>(null);
   const [subKey, setSubKey] = useState<string | null>(null);
   const [modelIdx, setModelIdx] = useState<number | null>(null);
-  const [mode, setMode] = useState<"stock" | "config">("stock");
+  const [mode, setMode] = useState<"stock" | "demo" | "config">("stock");
   const [stockSel, setStockSel] = useState(0);
   const [opts, setOpts] = useState<OptionsCalcul>({ mfguide: false, chargeur: false });
   const [brutInput, setBrutInput] = useState("");
@@ -32,9 +55,13 @@ export default function Calculateur({
     : null;
   const model: Modele | null = sub && modelIdx !== null ? sub.modeles[modelIdx] : null;
 
-  const stockCount = (mo: Modele) => mo.stock.length;
-  const subStock = (s: { modeles: Modele[] }) => s.modeles.reduce((a, mo) => a + stockCount(mo), 0);
-  const gammeStock = (g: Gamme) => g.sousNiveaux.reduce((a, s) => a + subStock(s), 0);
+  // Une machine sans prix (« sur demande ») est une machine de démo.
+  const neufCount = (mo: Modele) => mo.stock.filter((m) => m.prixBrut != null).length;
+  const demoCount = (mo: Modele) => mo.stock.filter((m) => m.prixBrut == null).length;
+  const subNeuf = (s: { modeles: Modele[] }) => s.modeles.reduce((a, mo) => a + neufCount(mo), 0);
+  const subDemo = (s: { modeles: Modele[] }) => s.modeles.reduce((a, mo) => a + demoCount(mo), 0);
+  const gammeNeuf = (g: Gamme) => g.sousNiveaux.reduce((a, s) => a + subNeuf(s), 0);
+  const gammeDemo = (g: Gamme) => g.sousNiveaux.reduce((a, s) => a + subDemo(s), 0);
 
   const resetInputs = () => {
     setOpts({ mfguide: false, chargeur: false });
@@ -56,14 +83,22 @@ export default function Calculateur({
     resetInputs();
     setModelIdx(i);
     setStockSel(0);
-    setMode(mo.stock.length > 0 ? "stock" : "config");
+    setMode(neufCount(mo) > 0 ? "stock" : demoCount(mo) > 0 ? "demo" : "config");
     setBrutInput(mo.brutIndicatif != null ? String(mo.brutIndicatif) : "");
   };
+  const choisirOnglet = (m: "stock" | "demo" | "config") => {
+    setMode(m);
+    setStockSel(0);
+    setBrutInput(model?.brutIndicatif != null && m === "config" ? String(model.brutIndicatif) : "");
+  };
 
-  const machineSel =
-    model && mode === "stock" && model.stock.length ? model.stock[stockSel] : null;
-  // Machine de démo (« sur demande ») : pas de prix → saisie manuelle du prix négocié.
-  const saisieBrut = mode === "config" || (machineSel != null && machineSel.prixBrut == null);
+  // Machines neuves (avec prix) et machines de démo (sans prix) du modèle courant.
+  const machinesNeuves = model ? model.stock.filter((m) => m.prixBrut != null) : [];
+  const machinesDemo = model ? model.stock.filter((m) => m.prixBrut == null) : [];
+  const liste = mode === "stock" ? machinesNeuves : mode === "demo" ? machinesDemo : [];
+  const machineSel = liste[stockSel] ?? null;
+  // Démo (« sur demande ») ou config en neuf → saisie manuelle du prix.
+  const saisieBrut = mode === "config" || mode === "demo";
   const activeBrut = !model
     ? 0
     : machineSel && machineSel.prixBrut != null
@@ -104,6 +139,8 @@ export default function Calculateur({
         .mf-root .stk { display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:600; color:var(--green); background:var(--greenbg); border-radius:6px; padding:3px 8px; margin-top:9px; }
         .mf-root .stk .dot { width:6px; height:6px; border-radius:99px; background:var(--green); }
         .mf-root .stk0 { display:inline-block; font-size:11px; font-weight:600; color:var(--mute); margin-top:9px; }
+        .mf-root .stkd { display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:600; color:var(--red); background:#fbe9eb; border-radius:6px; padding:3px 8px; margin-top:9px; margin-left:6px; }
+        .mf-root .stkd .dot { width:6px; height:6px; border-radius:99px; background:var(--red); }
         .mf-root .list { display:flex; flex-direction:column; gap:8px; }
         .mf-root .row { display:flex; align-items:center; justify-content:space-between; background:#fff; border:1px solid var(--line); border-radius:11px; padding:13px 15px; cursor:pointer; transition:.12s; }
         .mf-root .row:hover { border-color:var(--red); }
@@ -116,6 +153,8 @@ export default function Calculateur({
         .mf-root .tabs { display:flex; gap:6px; margin:14px 0; }
         .mf-root .tab { flex:1; padding:11px 8px; border:1px solid var(--line); border-radius:9px; background:#fff; cursor:pointer; font-weight:600; font-size:14px; color:var(--steel); }
         .mf-root .tab.on { background:var(--ink); color:#fff; border-color:var(--ink); }
+        .mf-root .tab.on.t-stock { background:var(--green); border-color:var(--green); }
+        .mf-root .tab.on.t-demo { background:var(--red); border-color:var(--red); }
         .mf-root .tab:disabled { opacity:.4; cursor:not-allowed; }
         .mf-root .mrow { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 13px; border:1px solid var(--line); border-radius:10px; cursor:pointer; margin-bottom:8px; }
         .mf-root .mrow.on { border-color:var(--red); background:#fff5f5; }
@@ -191,21 +230,16 @@ export default function Calculateur({
           <>
             <div className="lbl">Choisir une gamme</div>
             <div className="grid">
-              {gammes.map((g, i) => {
-                const n = gammeStock(g);
-                return (
-                  <button key={g.key} className="gcard" onClick={() => pickGamme(g)}>
-                    <div className="rank">{i + 1}.</div>
-                    <div className="gn">{g.label}</div>
-                    <div className="gd">{g.desc}</div>
-                    {n > 0 ? (
-                      <span className="stk"><span className="dot" />{n} en stock</span>
-                    ) : (
-                      <span className="stk0">Sur commande</span>
-                    )}
-                  </button>
-                );
-              })}
+              {gammes.map((g, i) => (
+                <button key={g.key} className="gcard" onClick={() => pickGamme(g)}>
+                  <div className="rank">{i + 1}.</div>
+                  <div className="gn">{g.label}</div>
+                  <div className="gd">{g.desc}</div>
+                  <div>
+                    <Pastilles neuf={gammeNeuf(g)} demo={gammeDemo(g)} />
+                  </div>
+                </button>
+              ))}
             </div>
           </>
         )}
@@ -215,22 +249,15 @@ export default function Calculateur({
           <>
             <div className="lbl">{gamme.labelSousNiveau}</div>
             <div className="list">
-              {gamme.sousNiveaux.map((s) => {
-                const n = subStock(s);
-                return (
-                  <div key={s.key} className="row" onClick={() => setSubKey(s.key)}>
-                    <span className="rn">{s.label}</span>
-                    <span className="rmeta">
-                      {n > 0 ? (
-                        <span className="stk" style={{ margin: 0 }}><span className="dot" />{n}</span>
-                      ) : (
-                        <span className="stk0" style={{ margin: 0 }}>commande</span>
-                      )}
-                      <span className="chev">›</span>
-                    </span>
-                  </div>
-                );
-              })}
+              {gamme.sousNiveaux.map((s) => (
+                <div key={s.key} className="row" onClick={() => setSubKey(s.key)}>
+                  <span className="rn">{s.label}</span>
+                  <span className="rmeta">
+                    <Pastilles neuf={subNeuf(s)} demo={subDemo(s)} compact />
+                    <span className="chev">›</span>
+                  </span>
+                </div>
+              ))}
             </div>
           </>
         )}
@@ -240,22 +267,15 @@ export default function Calculateur({
           <>
             <div className="lbl">Modèle {sub.label ? `· ${sub.label}` : ""}</div>
             <div className="list">
-              {sub.modeles.map((mo, i) => {
-                const n = stockCount(mo);
-                return (
-                  <div key={i} className="row" onClick={() => pickModel(i, mo)}>
-                    <span className="rn">{mo.nom}</span>
-                    <span className="rmeta">
-                      {n > 0 ? (
-                        <span className="stk" style={{ margin: 0 }}><span className="dot" />{n} en stock</span>
-                      ) : (
-                        <span className="stk0" style={{ margin: 0 }}>Sur commande</span>
-                      )}
-                      <span className="chev">›</span>
-                    </span>
-                  </div>
-                );
-              })}
+              {sub.modeles.map((mo, i) => (
+                <div key={i} className="row" onClick={() => pickModel(i, mo)}>
+                  <span className="rn">{mo.nom}</span>
+                  <span className="rmeta">
+                    <Pastilles neuf={neufCount(mo)} demo={demoCount(mo)} compact />
+                    <span className="chev">›</span>
+                  </span>
+                </div>
+              ))}
             </div>
           </>
         )}
@@ -271,23 +291,30 @@ export default function Calculateur({
 
               <div className="tabs">
                 <button
-                  className={`tab ${mode === "stock" ? "on" : ""}`}
-                  disabled={model.stock.length === 0}
-                  onClick={() => setMode("stock")}
+                  className={`tab ${mode === "stock" ? "on t-stock" : ""}`}
+                  disabled={machinesNeuves.length === 0}
+                  onClick={() => choisirOnglet("stock")}
                 >
-                  En stock{model.stock.length ? ` (${model.stock.length})` : ""}
+                  En stock{machinesNeuves.length ? ` (${machinesNeuves.length})` : ""}
+                </button>
+                <button
+                  className={`tab ${mode === "demo" ? "on t-demo" : ""}`}
+                  disabled={machinesDemo.length === 0}
+                  onClick={() => choisirOnglet("demo")}
+                >
+                  Démo{machinesDemo.length ? ` (${machinesDemo.length})` : ""}
                 </button>
                 <button
                   className={`tab ${mode === "config" ? "on" : ""}`}
-                  onClick={() => setMode("config")}
+                  onClick={() => choisirOnglet("config")}
                 >
                   Configurer en neuf
                 </button>
               </div>
 
-              {mode === "stock" && model.stock.length > 0 && (
+              {(mode === "stock" || mode === "demo") && liste.length > 0 && (
                 <div>
-                  {model.stock.map((mc, i) => (
+                  {liste.map((mc, i) => (
                     <div key={i} className={`mrow ${stockSel === i ? "on" : ""}`} onClick={() => setStockSel(i)}>
                       <span className="mc"><b>{mc.prixBrut != null ? fmt(mc.prixBrut) : "Sur demande"}</b><br />{mc.config}</span>
                       {mc.po && <span className="po">PO {mc.po}</span>}
@@ -297,7 +324,7 @@ export default function Calculateur({
               )}
 
               {saisieBrut && (
-                <div style={mode === "stock" ? { marginTop: 10 } : undefined}>
+                <div style={mode === "demo" ? { marginTop: 10 } : undefined}>
                   <div className="lbl">
                     {mode === "config" ? "Prix brut" : "Prix négocié (démo)"}{" "}
                     {mode === "config" && model.brutIndicatif != null && (
