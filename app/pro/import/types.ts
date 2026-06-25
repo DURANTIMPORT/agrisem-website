@@ -3,12 +3,23 @@ export type MachineExtraite = {
   po: string | null;
   prixBrut: number | null;
   config: string | null;
+  // Correspondance avec le catalogue (proposée par l'IA, résolue côté serveur)
+  gammeKey?: string | null;
+  sousKey?: string | null;
+  modeleCatalogue?: string | null; // nom exact du modèle catalogue
+  matchLabel?: string | null; // ex. "5S · Dyna-6 · 5S.145"
+  reconnu?: boolean;
 };
 
 export type ImportState = {
   error?: string;
   source?: string;
   machines?: MachineExtraite[];
+};
+
+export type PublishState = {
+  error?: string;
+  success?: string;
 };
 
 export const SOURCES: { value: string; label: string; supporte: boolean }[] = [

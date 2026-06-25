@@ -24,6 +24,50 @@ export async function getGammes(): Promise<Gamme[]> {
   return readFromDb(sql);
 }
 
+export type CatalogEntry = {
+  modeleId: number;
+  gammeKey: string;
+  gammeLabel: string;
+  sousKey: string;
+  sousLabel: string;
+  nom: string;
+};
+
+/** Liste à plat des modèles (pour la correspondance à l'import PDF). */
+export async function getCatalogFlat(): Promise<CatalogEntry[]> {
+  const sql = db();
+  if (!sql) {
+    return GAMMES.flatMap((g) =>
+      g.sousNiveaux.flatMap((s) =>
+        s.modeles.map((m) => ({
+          modeleId: -1,
+          gammeKey: g.key,
+          gammeLabel: g.label,
+          sousKey: s.key,
+          sousLabel: s.label,
+          nom: m.nom,
+        }))
+      )
+    );
+  }
+  const rows = await sql.query(
+    `SELECT m.id, m.nom, s.key AS sous_key, s.label AS sous_label,
+            g.key AS gamme_key, g.label AS gamme_label
+     FROM modeles m
+     JOIN sous_niveaux s ON s.id = m.sous_niveau_id
+     JOIN gammes g ON g.id = s.gamme_id
+     ORDER BY g.ordre, s.ordre, m.ordre`
+  );
+  return rows.map((r) => ({
+    modeleId: r.id,
+    gammeKey: r.gamme_key,
+    gammeLabel: r.gamme_label,
+    sousKey: r.sous_key,
+    sousLabel: r.sous_label,
+    nom: r.nom,
+  }));
+}
+
 async function readFromDb(
   sql: NonNullable<ReturnType<typeof db>>
 ): Promise<Gamme[]> {

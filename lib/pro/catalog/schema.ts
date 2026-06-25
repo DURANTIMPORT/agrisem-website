@@ -39,10 +39,13 @@ export const SCHEMA_STATEMENTS: string[] = [
   `CREATE TABLE IF NOT EXISTS machines_stock (
      id          SERIAL PRIMARY KEY,
      modele_id   INT  NOT NULL REFERENCES modeles(id) ON DELETE CASCADE,
-     po          TEXT NOT NULL,
+     po          TEXT,
      prix_brut   NUMERIC NOT NULL,
-     config      TEXT NOT NULL DEFAULT ''
+     config      TEXT NOT NULL DEFAULT '',
+     source      TEXT NOT NULL DEFAULT 'seed'
    )`,
+  // Pour les bases déjà créées sans la colonne source :
+  `ALTER TABLE machines_stock ADD COLUMN IF NOT EXISTS source TEXT NOT NULL DEFAULT 'seed'`,
   `CREATE TABLE IF NOT EXISTS settings (
      cle     TEXT PRIMARY KEY,
      valeur  TEXT NOT NULL

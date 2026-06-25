@@ -1,16 +1,21 @@
 "use client";
 
 import { useActionState } from "react";
-import { extractPdf } from "./actions";
-import { SOURCES, type ImportState } from "./types";
+import { extractPdf, publishStock } from "./actions";
+import { SOURCES, type ImportState, type PublishState } from "./types";
 
 const initial: ImportState = {};
+const initialPub: PublishState = {};
 
-const eur = (n: number | null) =>
+const eur = (n: number | null | undefined) =>
   n == null ? "—" : new Intl.NumberFormat("fr-BE").format(n) + " €";
 
 export default function ImportForm() {
   const [state, action, pending] = useActionState(extractPdf, initial);
+  const [pub, pubAction, pubPending] = useActionState(publishStock, initialPub);
+
+  const machines = state.machines ?? [];
+  const reconnues = machines.filter((m) => m.reconnu).length;
 
   return (
     <div className="space-y-6">
@@ -51,50 +56,72 @@ export default function ImportForm() {
         >
           {pending ? "Lecture du PDF par l'IA…" : "Lire le document"}
         </button>
-
         <p className="mt-2 text-xs text-[#848689]">
-          L&apos;IA lit le PDF et propose les données extraites. Rien n&apos;est
-          enregistré tant que tu n&apos;as pas validé.
+          L&apos;IA lit le PDF et propose les données + la correspondance au
+          catalogue. Rien n&apos;est enregistré tant que tu n&apos;as pas publié.
         </p>
-
         {state.error && (
           <p className="mt-3 text-sm font-medium text-[#C71121]">{state.error}</p>
         )}
       </form>
 
-      {state.machines && state.machines.length > 0 && (
+      {machines.length > 0 && (
         <section className="rounded-xl border border-black/10 bg-white p-4">
-          <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-[#1c1d1f]">
-              {state.machines.length} machine(s) extraite(s) — à vérifier
-            </h2>
-          </div>
+          <h2 className="mb-1 text-sm font-semibold text-[#1c1d1f]">
+            {machines.length} machine(s) extraite(s)
+          </h2>
+          <p className="mb-3 text-xs text-[#848689]">
+            {reconnues} reconnue(s) · {machines.length - reconnues} non reconnue(s).
+            Vérifie les correspondances avant de publier.
+          </p>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="border-b border-black/10 text-xs uppercase tracking-wider text-[#848689]">
-                  <th className="py-2 pr-3">Modèle</th>
+                  <th className="py-2 pr-3">Machine (PDF)</th>
+                  <th className="py-2 pr-3">Correspondance catalogue</th>
                   <th className="py-2 pr-3">PO</th>
                   <th className="py-2 pr-3">Prix brut</th>
                   <th className="py-2">Config</th>
                 </tr>
               </thead>
               <tbody>
-                {state.machines.map((m, i) => (
-                  <tr key={i} className="border-b border-black/5">
+                {machines.map((m, i) => (
+                  <tr key={i} className="border-b border-black/5 align-top">
                     <td className="py-2 pr-3 font-medium text-[#1c1d1f]">{m.modele ?? "—"}</td>
+                    <td className="py-2 pr-3">
+                      {m.reconnu ? (
+                        <span className="text-[#1a8a3f]">{m.matchLabel}</span>
+                      ) : (
+                        <span className="font-medium text-[#C71121]">Non reconnu</span>
+                      )}
+                    </td>
                     <td className="py-2 pr-3 text-[#5F6062]">{m.po ?? "—"}</td>
                     <td className="py-2 pr-3 tabular-nums text-[#1c1d1f]">{eur(m.prixBrut)}</td>
-                    <td className="py-2 text-[#5F6062]">{m.config ?? "—"}</td>
+                    <td className="py-2 text-xs text-[#5F6062]">{m.config ?? "—"}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <p className="mt-4 rounded-lg bg-black/5 p-3 text-center text-xs text-[#848689]">
-            La publication dans la base (remplacement du stock) arrive juste après —
-            on valide d&apos;abord la qualité de l&apos;extraction.
-          </p>
+
+          <form action={pubAction} className="mt-4 border-t border-black/10 pt-4">
+            <input type="hidden" name="source" value={state.source ?? ""} />
+            <input type="hidden" name="data" value={JSON.stringify(machines)} />
+            <button
+              type="submit"
+              disabled={pubPending || reconnues === 0}
+              className="rounded-lg bg-[#C71121] px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+            >
+              {pubPending ? "Publication…" : "Publier dans le catalogue"}
+            </button>
+            <p className="mt-2 text-xs text-[#848689]">
+              Remplace le stock de cette source. Seules les machines reconnues et
+              avec un prix sont publiées.
+            </p>
+            {pub.error && <p className="mt-2 text-sm font-medium text-[#C71121]">{pub.error}</p>}
+            {pub.success && <p className="mt-2 text-sm font-medium text-[#1a8a3f]">{pub.success}</p>}
+          </form>
         </section>
       )}
     </div>
