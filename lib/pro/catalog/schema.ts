@@ -30,12 +30,15 @@ export const SCHEMA_STATEMENTS: string[] = [
   `CREATE TABLE IF NOT EXISTS etapes (
      id            SERIAL PRIMARY KEY,
      modele_id     INT  NOT NULL REFERENCES modeles(id) ON DELETE CASCADE,
+     regime        TEXT NOT NULL DEFAULT 'commande',
      position      INT  NOT NULL,
      type          TEXT NOT NULL,
      valeur        NUMERIC NOT NULL,
      label         TEXT NOT NULL,
      conditionnel  TEXT
    )`,
+  // Double régime (commande ≠ stock) pour les bases déjà créées :
+  `ALTER TABLE etapes ADD COLUMN IF NOT EXISTS regime TEXT NOT NULL DEFAULT 'commande'`,
   `CREATE TABLE IF NOT EXISTS machines_stock (
      id          SERIAL PRIMARY KEY,
      modele_id   INT  NOT NULL REFERENCES modeles(id) ON DELETE CASCADE,

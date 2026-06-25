@@ -75,7 +75,7 @@ async function readFromDb(
     sql.query(`SELECT id,key,label,descr,ordre,label_sous_niveau FROM gammes ORDER BY ordre`),
     sql.query(`SELECT id,gamme_id,key,label,type,ordre FROM sous_niveaux ORDER BY ordre`),
     sql.query(`SELECT id,sous_niveau_id,nom,brut_indicatif,prix_retail_mf,ordre FROM modeles ORDER BY ordre`),
-    sql.query(`SELECT id,modele_id,position,type,valeur,label,conditionnel FROM etapes ORDER BY position`),
+    sql.query(`SELECT id,modele_id,regime,position,type,valeur,label,conditionnel FROM etapes ORDER BY position`),
     sql.query(`SELECT id,modele_id,po,prix_brut,config FROM machines_stock ORDER BY id`),
   ]);
 
@@ -85,6 +85,7 @@ async function readFromDb(
     modeles.set(m.id, {
       nom: m.nom,
       etapes: [],
+      etapesStock: [],
       brutIndicatif: m.brut_indicatif != null ? num(m.brut_indicatif) : undefined,
       prixRetailMf: m.prix_retail_mf != null ? num(m.prix_retail_mf) : undefined,
       stock: [],
@@ -101,7 +102,8 @@ async function readFromDb(
       label: e.label,
       ...(e.conditionnel ? { conditionnel: e.conditionnel } : {}),
     };
-    mo.etapes.push(etape);
+    if (e.regime === "stock") mo.etapesStock!.push(etape);
+    else mo.etapes.push(etape);
   }
 
   for (const st of stRows) {

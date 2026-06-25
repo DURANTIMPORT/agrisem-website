@@ -22,7 +22,8 @@ export interface MachineStock {
 
 export interface Modele {
   nom: string; // ex. "7S.165 EXC"
-  etapes: EtapeRemise[]; // grille de remises du modèle
+  etapes: EtapeRemise[]; // grille « nouvelles commandes » (régime par défaut)
+  etapesStock?: EtapeRemise[]; // grille « liste de stock » (si différente)
   brutIndicatif?: number; // prix brut indicatif (mode « configurer en neuf »)
   prixRetailMf?: number; // prix retail fourni par MF (badge « PRIX MF »)
   stock: MachineStock[];

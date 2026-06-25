@@ -106,15 +106,22 @@ export default function Calculateur({
       : parseFloat(brutInput) || 0;
   const activePo = machineSel?.po ?? null;
 
+  // Grille active : stock/démo → grille « liste de stock » si elle existe,
+  // sinon (et en « configurer en neuf ») → grille « nouvelles commandes ».
+  const etapesActives =
+    model && (mode === "stock" || mode === "demo") && model.etapesStock && model.etapesStock.length
+      ? model.etapesStock
+      : model?.etapes ?? [];
+
   const calc = useMemo(() => {
     if (!model || activeBrut <= 0) return { net: 0, lignes: [] as ReturnType<typeof calculerNet>["lignes"] };
-    const r = calculerNet(activeBrut, model.etapes, opts);
+    const r = calculerNet(activeBrut, etapesActives, opts);
     return { net: r.net, lignes: r.lignes.filter((l) => !l.ignoree) };
-  }, [model, activeBrut, opts]);
+  }, [model, activeBrut, opts, etapesActives]);
 
   const retail = model ? (model.prixRetailMf ?? (parseFloat(retailInput) || null)) : null;
   const marge = retail !== null && activeBrut > 0 ? retail - calc.net : null;
-  const conditionnels = model ? model.etapes.filter((e) => e.conditionnel) : [];
+  const conditionnels = etapesActives.filter((e) => e.conditionnel);
 
   return (
     <div className="mf-root">

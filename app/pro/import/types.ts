@@ -11,10 +11,28 @@ export type MachineExtraite = {
   reconnu?: boolean;
 };
 
+export type EtapeExtraite = {
+  type: "pct" | "eur";
+  valeur: number;
+  label: string;
+  conditionnel?: "mfguide" | "chargeur";
+};
+
+export type ModeleGrille = {
+  modele: string | null; // nom tel que lu dans le PDF
+  gammeKey?: string | null;
+  sousKey?: string | null;
+  modeleCatalogue?: string | null;
+  matchLabel?: string | null;
+  reconnu?: boolean;
+  etapes: EtapeExtraite[];
+};
+
 export type ImportState = {
   error?: string;
   source?: string;
-  machines?: MachineExtraite[];
+  machines?: MachineExtraite[]; // sources stock
+  modeles?: ModeleGrille[]; // sources grilles de remises
 };
 
 export type PublishState = {
@@ -25,7 +43,7 @@ export type PublishState = {
 export const SOURCES: { value: string; label: string; supporte: boolean }[] = [
   { value: "stock_tracteurs", label: "Liste stock — tracteurs", supporte: true },
   { value: "stock_fenaison", label: "Liste stock — fenaison", supporte: true },
-  { value: "remises_commande", label: "Grille remises — nouvelles commandes", supporte: false },
-  { value: "remises_stock", label: "Grille remises — liste de stock", supporte: false },
+  { value: "remises_commande", label: "Grille remises — nouvelles commandes", supporte: true },
+  { value: "remises_stock", label: "Grille remises — liste de stock", supporte: true },
   { value: "actions", label: "Actions commerciales", supporte: false },
 ];

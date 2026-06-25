@@ -1,8 +1,8 @@
 "use client";
 
 import { useActionState } from "react";
-import { extractPdf, publishStock } from "./actions";
-import { SOURCES, type ImportState, type PublishState } from "./types";
+import { extractPdf, publishStock, publishGrid } from "./actions";
+import { SOURCES, type ImportState, type PublishState, type EtapeExtraite } from "./types";
 
 const initial: ImportState = {};
 const initialPub: PublishState = {};
@@ -10,12 +10,18 @@ const initialPub: PublishState = {};
 const eur = (n: number | null | undefined) =>
   n == null ? "—" : new Intl.NumberFormat("fr-BE").format(n) + " €";
 
+const etapeTexte = (e: EtapeExtraite) =>
+  `−${e.type === "pct" ? e.valeur + " %" : eur(e.valeur)}${e.conditionnel ? ` (${e.conditionnel === "mfguide" ? "MF Guide" : "chargeur"})` : ""}`;
+
 export default function ImportForm() {
   const [state, action, pending] = useActionState(extractPdf, initial);
-  const [pub, pubAction, pubPending] = useActionState(publishStock, initialPub);
+  const [pubS, pubStockAction, pubStockPending] = useActionState(publishStock, initialPub);
+  const [pubG, pubGridAction, pubGridPending] = useActionState(publishGrid, initialPub);
 
   const machines = state.machines ?? [];
-  const reconnues = machines.filter((m) => m.reconnu).length;
+  const modeles = state.modeles ?? [];
+  const reconnuesM = machines.filter((m) => m.reconnu).length;
+  const reconnuesG = modeles.filter((m) => m.reconnu).length;
 
   return (
     <div className="space-y-6">
@@ -60,26 +66,22 @@ export default function ImportForm() {
           L&apos;IA lit le PDF et propose les données + la correspondance au
           catalogue. Rien n&apos;est enregistré tant que tu n&apos;as pas publié.
         </p>
-        {state.error && (
-          <p className="mt-3 text-sm font-medium text-[#C71121]">{state.error}</p>
-        )}
+        {state.error && <p className="mt-3 text-sm font-medium text-[#C71121]">{state.error}</p>}
       </form>
 
+      {/* ── Validation STOCK ── */}
       {machines.length > 0 && (
         <section className="rounded-xl border border-black/10 bg-white p-4">
-          <h2 className="mb-1 text-sm font-semibold text-[#1c1d1f]">
-            {machines.length} machine(s) extraite(s)
-          </h2>
+          <h2 className="mb-1 text-sm font-semibold text-[#1c1d1f]">{machines.length} machine(s) extraite(s)</h2>
           <p className="mb-3 text-xs text-[#848689]">
-            {reconnues} reconnue(s) · {machines.length - reconnues} non reconnue(s).
-            Vérifie les correspondances avant de publier.
+            {reconnuesM} reconnue(s) · {machines.length - reconnuesM} non reconnue(s).
           </p>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="border-b border-black/10 text-xs uppercase tracking-wider text-[#848689]">
                   <th className="py-2 pr-3">Machine (PDF)</th>
-                  <th className="py-2 pr-3">Correspondance catalogue</th>
+                  <th className="py-2 pr-3">Correspondance</th>
                   <th className="py-2 pr-3">PO</th>
                   <th className="py-2 pr-3">Prix brut</th>
                   <th className="py-2">Config</th>
@@ -104,23 +106,75 @@ export default function ImportForm() {
               </tbody>
             </table>
           </div>
-
-          <form action={pubAction} className="mt-4 border-t border-black/10 pt-4">
+          <form action={pubStockAction} className="mt-4 border-t border-black/10 pt-4">
             <input type="hidden" name="source" value={state.source ?? ""} />
             <input type="hidden" name="data" value={JSON.stringify(machines)} />
             <button
               type="submit"
-              disabled={pubPending || reconnues === 0}
+              disabled={pubStockPending || reconnuesM === 0}
               className="rounded-lg bg-[#C71121] px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
             >
-              {pubPending ? "Publication…" : "Publier dans le catalogue"}
+              {pubStockPending ? "Publication…" : "Publier dans le catalogue"}
+            </button>
+            <p className="mt-2 text-xs text-[#848689]">Remplace le stock de cette source.</p>
+            {pubS.error && <p className="mt-2 text-sm font-medium text-[#C71121]">{pubS.error}</p>}
+            {pubS.success && <p className="mt-2 text-sm font-medium text-[#1a8a3f]">{pubS.success}</p>}
+          </form>
+        </section>
+      )}
+
+      {/* ── Validation GRILLES DE REMISES ── */}
+      {modeles.length > 0 && (
+        <section className="rounded-xl border border-black/10 bg-white p-4">
+          <h2 className="mb-1 text-sm font-semibold text-[#1c1d1f]">{modeles.length} grille(s) extraite(s)</h2>
+          <p className="mb-3 text-xs text-[#848689]">
+            {reconnuesG} reconnue(s) · {modeles.length - reconnuesG} non reconnue(s). Seules les
+            reconnues seront publiées.
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead>
+                <tr className="border-b border-black/10 text-xs uppercase tracking-wider text-[#848689]">
+                  <th className="py-2 pr-3">Modèle (PDF)</th>
+                  <th className="py-2 pr-3">Correspondance</th>
+                  <th className="py-2">Remises (dans l&apos;ordre)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {modeles.map((m, i) => (
+                  <tr key={i} className="border-b border-black/5 align-top">
+                    <td className="py-2 pr-3 font-medium text-[#1c1d1f]">{m.modele ?? "—"}</td>
+                    <td className="py-2 pr-3">
+                      {m.reconnu ? (
+                        <span className="text-[#1a8a3f]">{m.matchLabel}</span>
+                      ) : (
+                        <span className="font-medium text-[#C71121]">Non reconnu</span>
+                      )}
+                    </td>
+                    <td className="py-2 text-xs text-[#5F6062]">
+                      {m.etapes.map(etapeTexte).join("  ·  ")}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <form action={pubGridAction} className="mt-4 border-t border-black/10 pt-4">
+            <input type="hidden" name="source" value={state.source ?? ""} />
+            <input type="hidden" name="data" value={JSON.stringify(modeles)} />
+            <button
+              type="submit"
+              disabled={pubGridPending || reconnuesG === 0}
+              className="rounded-lg bg-[#C71121] px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+            >
+              {pubGridPending ? "Publication…" : "Publier les grilles"}
             </button>
             <p className="mt-2 text-xs text-[#848689]">
-              Remplace le stock de cette source. Seules les machines reconnues et
-              avec un prix sont publiées.
+              Remplace les remises des modèles reconnus pour ce régime
+              (commande ou stock).
             </p>
-            {pub.error && <p className="mt-2 text-sm font-medium text-[#C71121]">{pub.error}</p>}
-            {pub.success && <p className="mt-2 text-sm font-medium text-[#1a8a3f]">{pub.success}</p>}
+            {pubG.error && <p className="mt-2 text-sm font-medium text-[#C71121]">{pubG.error}</p>}
+            {pubG.success && <p className="mt-2 text-sm font-medium text-[#1a8a3f]">{pubG.success}</p>}
           </form>
         </section>
       )}
