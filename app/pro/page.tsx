@@ -16,6 +16,12 @@ const TUILES_COMMERCIAL: Tuile[] = [
     bientot: false,
     href: "/pro/calculateur",
   },
+  {
+    titre: "Actions commerciales",
+    description: "Campagnes en cours et leurs conditions.",
+    bientot: false,
+    href: "/pro/actions",
+  },
 ];
 
 const TUILES_ADMIN: Tuile[] = [

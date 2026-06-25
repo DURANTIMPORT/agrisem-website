@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { extractPdf, publishStock, publishGrid } from "./actions";
+import { extractPdf, publishStock, publishGrid, publishActions } from "./actions";
 import { SOURCES, type ImportState, type PublishState, type EtapeExtraite } from "./types";
 
 const initial: ImportState = {};
@@ -17,9 +17,11 @@ export default function ImportForm() {
   const [state, action, pending] = useActionState(extractPdf, initial);
   const [pubS, pubStockAction, pubStockPending] = useActionState(publishStock, initialPub);
   const [pubG, pubGridAction, pubGridPending] = useActionState(publishGrid, initialPub);
+  const [pubA, pubActionsAction, pubActionsPending] = useActionState(publishActions, initialPub);
 
   const machines = state.machines ?? [];
   const modeles = state.modeles ?? [];
+  const actions = state.actions ?? [];
   const reconnuesM = machines.filter((m) => m.reconnu).length;
   const reconnuesG = modeles.filter((m) => m.reconnu).length;
 
@@ -175,6 +177,45 @@ export default function ImportForm() {
             </p>
             {pubG.error && <p className="mt-2 text-sm font-medium text-[#C71121]">{pubG.error}</p>}
             {pubG.success && <p className="mt-2 text-sm font-medium text-[#1a8a3f]">{pubG.success}</p>}
+          </form>
+        </section>
+      )}
+
+      {/* ── Validation ACTIONS commerciales ── */}
+      {actions.length > 0 && (
+        <section className="rounded-xl border border-black/10 bg-white p-4">
+          <h2 className="mb-3 text-sm font-semibold text-[#1c1d1f]">
+            {actions.length} action(s) extraite(s)
+          </h2>
+          <div className="space-y-3">
+            {actions.map((a, i) => (
+              <div key={i} className="rounded-lg border border-black/10 p-3">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="font-medium text-[#1c1d1f]">{a.titre}</span>
+                  <span className="shrink-0 text-xs text-[#848689]">
+                    {a.dateEcheance ? `échéance ${a.dateEcheance}` : "sans date"}
+                  </span>
+                </div>
+                <p className="mt-1 text-sm text-[#1c1d1f]">
+                  {a.gammes ? `${a.gammes} — ` : ""}
+                  <span className="font-semibold text-[#C71121]">{a.avantage ?? ""}</span>
+                </p>
+                {a.conditions && <p className="mt-1 text-xs text-[#5F6062]">{a.conditions}</p>}
+              </div>
+            ))}
+          </div>
+          <form action={pubActionsAction} className="mt-4 border-t border-black/10 pt-4">
+            <input type="hidden" name="data" value={JSON.stringify(actions)} />
+            <button
+              type="submit"
+              disabled={pubActionsPending}
+              className="rounded-lg bg-[#C71121] px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+            >
+              {pubActionsPending ? "Publication…" : "Publier les actions"}
+            </button>
+            <p className="mt-2 text-xs text-[#848689]">Remplace la liste des actions commerciales.</p>
+            {pubA.error && <p className="mt-2 text-sm font-medium text-[#C71121]">{pubA.error}</p>}
+            {pubA.success && <p className="mt-2 text-sm font-medium text-[#1a8a3f]">{pubA.success}</p>}
           </form>
         </section>
       )}

@@ -56,4 +56,13 @@ export const SCHEMA_STATEMENTS: string[] = [
      cle     TEXT PRIMARY KEY,
      valeur  TEXT NOT NULL
    )`,
+  `CREATE TABLE IF NOT EXISTS actions (
+     id             SERIAL PRIMARY KEY,
+     titre          TEXT NOT NULL,
+     gammes         TEXT,
+     avantage       TEXT,
+     date_echeance  DATE,
+     conditions     TEXT,
+     position       INT NOT NULL DEFAULT 0
+   )`,
 ];

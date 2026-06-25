@@ -28,11 +28,20 @@ export type ModeleGrille = {
   etapes: EtapeExtraite[];
 };
 
+export type ActionExtraite = {
+  titre: string;
+  gammes: string | null;
+  avantage: string | null;
+  dateEcheance: string | null; // "YYYY-MM-DD" ou null
+  conditions: string | null;
+};
+
 export type ImportState = {
   error?: string;
   source?: string;
   machines?: MachineExtraite[]; // sources stock
   modeles?: ModeleGrille[]; // sources grilles de remises
+  actions?: ActionExtraite[]; // source actions commerciales
 };
 
 export type PublishState = {
@@ -45,5 +54,5 @@ export const SOURCES: { value: string; label: string; supporte: boolean }[] = [
   { value: "stock_fenaison", label: "Liste stock — fenaison", supporte: true },
   { value: "remises_commande", label: "Grille remises — nouvelles commandes", supporte: true },
   { value: "remises_stock", label: "Grille remises — liste de stock", supporte: true },
-  { value: "actions", label: "Actions commerciales", supporte: false },
+  { value: "actions", label: "Actions commerciales", supporte: true },
 ];

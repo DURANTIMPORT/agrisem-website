@@ -10,6 +10,7 @@ import type {
   MachineExtraite,
   ModeleGrille,
   EtapeExtraite,
+  ActionExtraite,
 } from "./types";
 
 function stripFences(text: string): string {
@@ -187,6 +188,43 @@ Réponds UNIQUEMENT en JSON compact :
   return { modeles, source };
 }
 
+// ── Extraction des ACTIONS commerciales ──────────────────────────────
+async function extractActions(data: string, source: string): Promise<ImportState> {
+  const prompt = `Ce PDF "Sales actions" liste des campagnes commerciales Massey Ferguson.
+Extrais CHAQUE action / campagne distincte.
+Réponds UNIQUEMENT en JSON :
+{"actions":[{"titre":"Hunting Campaign 6S & 7S","gammes":"6S et 7S","avantage":"3 000 € net","dateEcheance":"2026-06-15","conditions":"reprise concurrence, stock Belgique"}]}
+- "titre" : nom court de l'action.
+- "gammes" : gammes/modèles ciblés (texte court).
+- "avantage" : la remise ou l'offre (ex. "3 000 € net", "0% sur 5 ans", "prix nets fixes").
+- "dateEcheance" : date limite au format YYYY-MM-DD, ou null si non précisée.
+- "conditions" : conditions clés (reprise, finance, stock, non cumulable…), texte court.
+N'invente rien.`;
+
+  const client = new Anthropic();
+  const res = await client.messages.create({
+    model: "claude-sonnet-4-6",
+    max_tokens: 4000,
+    messages: [
+      {
+        role: "user",
+        content: [
+          { type: "document", source: { type: "base64", media_type: "application/pdf", data } },
+          { type: "text", text: prompt },
+        ],
+      },
+    ],
+  });
+  const text = res.content
+    .filter((b): b is Anthropic.TextBlock => b.type === "text")
+    .map((b) => b.text)
+    .join("\n");
+  const parsed = JSON.parse(stripFences(text)) as { actions?: ActionExtraite[] };
+  const actions = Array.isArray(parsed.actions) ? parsed.actions : [];
+  if (actions.length === 0) return { error: "Aucune action n'a pu être extraite.", source };
+  return { actions, source };
+}
+
 // ── Point d'entrée extraction ────────────────────────────────────────
 export async function extractPdf(_prev: ImportState, formData: FormData): Promise<ImportState> {
   if (!(await isAdmin())) return { error: "Accès réservé aux administrateurs." };
@@ -205,6 +243,7 @@ export async function extractPdf(_prev: ImportState, formData: FormData): Promis
       return await extractStock(data, source, catalog);
     if (source === "remises_commande" || source === "remises_stock")
       return await extractGrid(data, source, catalog);
+    if (source === "actions") return await extractActions(data, source);
     return { error: "Ce type de source n'est pas encore pris en charge." };
   } catch (e) {
     return {
@@ -307,6 +346,34 @@ export async function publishGrid(_prev: PublishState, formData: FormData): Prom
     const parts = [`${aPublier.length} grille(s) « ${libelle} » publiée(s)`];
     if (nonReconnues) parts.push(`${nonReconnues} modèle(s) non reconnu(s) ignoré(s)`);
     return { success: parts.join(" · ") + "." };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Échec de la publication." };
+  }
+}
+
+// ── Publication des ACTIONS commerciales ─────────────────────────────
+export async function publishActions(_prev: PublishState, formData: FormData): Promise<PublishState> {
+  if (!(await isAdmin())) return { error: "Accès réservé aux administrateurs." };
+  const sql = db();
+  if (!sql) return { error: "Base de données non configurée." };
+
+  let actions: ActionExtraite[];
+  try {
+    actions = JSON.parse(String(formData.get("data") ?? "[]"));
+  } catch {
+    return { error: "Données invalides." };
+  }
+
+  try {
+    await sql.query(`DELETE FROM actions`);
+    for (const [i, a] of actions.entries()) {
+      await sql.query(
+        `INSERT INTO actions (titre, gammes, avantage, date_echeance, conditions, position)
+         VALUES ($1,$2,$3,$4,$5,$6)`,
+        [a.titre, a.gammes ?? null, a.avantage ?? null, a.dateEcheance || null, a.conditions ?? null, i]
+      );
+    }
+    return { success: `${actions.length} action(s) publiée(s).` };
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Échec de la publication." };
   }
