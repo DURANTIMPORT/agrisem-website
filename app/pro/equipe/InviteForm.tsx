@@ -11,7 +11,7 @@ export default function InviteForm() {
 
   return (
     <form action={action} className="rounded-xl border border-black/10 bg-white p-4">
-      <label htmlFor="email" className="block text-sm font-medium text-[#1c1d1f]">
+      <label htmlFor="email" className="block text-sm font-medium text-[#000002]">
         Inviter un commercial
       </label>
       <p className="mt-0.5 text-xs text-[#848689]">
@@ -24,7 +24,7 @@ export default function InviteForm() {
           type="email"
           required
           placeholder="email@exemple.com"
-          className="flex-1 rounded-lg border border-black/10 px-4 py-2.5 text-sm text-[#1c1d1f] focus:border-[#C71121] focus:outline-none focus:ring-2 focus:ring-[#C71121]/20"
+          className="flex-1 rounded-lg border border-black/10 px-4 py-2.5 text-sm text-[#000002] focus:border-[#C71121] focus:outline-none focus:ring-2 focus:ring-[#C71121]/20"
         />
         <button
           type="submit"

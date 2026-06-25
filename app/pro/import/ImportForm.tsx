@@ -28,14 +28,14 @@ export default function ImportForm() {
   return (
     <div className="space-y-6">
       <form action={action} className="rounded-xl border border-black/10 bg-white p-4">
-        <label htmlFor="source" className="block text-sm font-medium text-[#1c1d1f]">
+        <label htmlFor="source" className="block text-sm font-medium text-[#000002]">
           Type de document
         </label>
         <select
           id="source"
           name="source"
           defaultValue="stock_tracteurs"
-          className="mt-2 w-full rounded-lg border border-black/10 px-4 py-2.5 text-sm text-[#1c1d1f] focus:border-[#C71121] focus:outline-none focus:ring-2 focus:ring-[#C71121]/20"
+          className="mt-2 w-full rounded-lg border border-black/10 px-4 py-2.5 text-sm text-[#000002] focus:border-[#C71121] focus:outline-none focus:ring-2 focus:ring-[#C71121]/20"
         >
           {SOURCES.map((s) => (
             <option key={s.value} value={s.value} disabled={!s.supporte}>
@@ -45,7 +45,7 @@ export default function ImportForm() {
           ))}
         </select>
 
-        <label htmlFor="pdf" className="mt-4 block text-sm font-medium text-[#1c1d1f]">
+        <label htmlFor="pdf" className="mt-4 block text-sm font-medium text-[#000002]">
           Fichier PDF
         </label>
         <input
@@ -60,7 +60,7 @@ export default function ImportForm() {
         <button
           type="submit"
           disabled={pending}
-          className="mt-4 rounded-lg bg-[#1c1d1f] px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+          className="mt-4 rounded-lg bg-[#000002] px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
         >
           {pending ? "Lecture du PDF par l'IA…" : "Lire le document"}
         </button>
@@ -74,7 +74,7 @@ export default function ImportForm() {
       {/* ── Validation STOCK ── */}
       {machines.length > 0 && (
         <section className="rounded-xl border border-black/10 bg-white p-4">
-          <h2 className="mb-1 text-sm font-semibold text-[#1c1d1f]">{machines.length} machine(s) extraite(s)</h2>
+          <h2 className="mb-1 text-sm font-semibold text-[#000002]">{machines.length} machine(s) extraite(s)</h2>
           <p className="mb-3 text-xs text-[#848689]">
             {reconnuesM} reconnue(s) · {machines.length - reconnuesM} non reconnue(s).
           </p>
@@ -92,7 +92,7 @@ export default function ImportForm() {
               <tbody>
                 {machines.map((m, i) => (
                   <tr key={i} className="border-b border-black/5 align-top">
-                    <td className="py-2 pr-3 font-medium text-[#1c1d1f]">{m.modele ?? "—"}</td>
+                    <td className="py-2 pr-3 font-medium text-[#000002]">{m.modele ?? "—"}</td>
                     <td className="py-2 pr-3">
                       {m.reconnu ? (
                         <span className="text-[#1a8a3f]">{m.matchLabel}</span>
@@ -101,7 +101,7 @@ export default function ImportForm() {
                       )}
                     </td>
                     <td className="py-2 pr-3 text-[#5F6062]">{m.po ?? "—"}</td>
-                    <td className="py-2 pr-3 tabular-nums text-[#1c1d1f]">{eur(m.prixBrut)}</td>
+                    <td className="py-2 pr-3 tabular-nums text-[#000002]">{eur(m.prixBrut)}</td>
                     <td className="py-2 text-xs text-[#5F6062]">{m.config ?? "—"}</td>
                   </tr>
                 ))}
@@ -128,7 +128,7 @@ export default function ImportForm() {
       {/* ── Validation GRILLES DE REMISES ── */}
       {modeles.length > 0 && (
         <section className="rounded-xl border border-black/10 bg-white p-4">
-          <h2 className="mb-1 text-sm font-semibold text-[#1c1d1f]">{modeles.length} grille(s) extraite(s)</h2>
+          <h2 className="mb-1 text-sm font-semibold text-[#000002]">{modeles.length} grille(s) extraite(s)</h2>
           <p className="mb-3 text-xs text-[#848689]">
             {reconnuesG} reconnue(s) · {modeles.length - reconnuesG} non reconnue(s). Seules les
             reconnues seront publiées.
@@ -145,7 +145,7 @@ export default function ImportForm() {
               <tbody>
                 {modeles.map((m, i) => (
                   <tr key={i} className="border-b border-black/5 align-top">
-                    <td className="py-2 pr-3 font-medium text-[#1c1d1f]">{m.modele ?? "—"}</td>
+                    <td className="py-2 pr-3 font-medium text-[#000002]">{m.modele ?? "—"}</td>
                     <td className="py-2 pr-3">
                       {m.reconnu ? (
                         <span className="text-[#1a8a3f]">{m.matchLabel}</span>
@@ -184,19 +184,19 @@ export default function ImportForm() {
       {/* ── Validation ACTIONS commerciales ── */}
       {actions.length > 0 && (
         <section className="rounded-xl border border-black/10 bg-white p-4">
-          <h2 className="mb-3 text-sm font-semibold text-[#1c1d1f]">
+          <h2 className="mb-3 text-sm font-semibold text-[#000002]">
             {actions.length} action(s) extraite(s)
           </h2>
           <div className="space-y-3">
             {actions.map((a, i) => (
               <div key={i} className="rounded-lg border border-black/10 p-3">
                 <div className="flex items-center justify-between gap-3">
-                  <span className="font-medium text-[#1c1d1f]">{a.titre}</span>
+                  <span className="font-medium text-[#000002]">{a.titre}</span>
                   <span className="shrink-0 text-xs text-[#848689]">
                     {a.dateEcheance ? `échéance ${a.dateEcheance}` : "sans date"}
                   </span>
                 </div>
-                <p className="mt-1 text-sm text-[#1c1d1f]">
+                <p className="mt-1 text-sm text-[#000002]">
                   {a.gammes ? `${a.gammes} — ` : ""}
                   <span className="font-semibold text-[#C71121]">{a.avantage ?? ""}</span>
                 </p>

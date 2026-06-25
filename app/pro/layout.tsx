@@ -13,12 +13,10 @@ export default function ProLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <div className="flex min-h-screen flex-col bg-[#f2f3f4]">
-      <header className="sticky top-0 z-40 flex items-center justify-between border-b border-black/10 bg-white px-4 py-3">
-        <Link
-          href="/pro"
-          className="text-sm font-bold tracking-wide text-[#1c1d1f]"
-        >
-          <span className="text-[#C71121]">AGRISEM</span> · Espace Pro
+      <header className="sticky top-0 z-40 flex items-center justify-between border-t-4 border-[#C71121] bg-[#000002] px-4 py-3">
+        <Link href="/pro" className="text-sm font-bold tracking-wide text-white">
+          <span className="text-[#C71121]">AGRISEM</span>
+          <span className="text-white/50"> · Espace Pro</span>
         </Link>
         <UserButton />
       </header>

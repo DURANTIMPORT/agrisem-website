@@ -18,7 +18,7 @@ export default async function ActionsPage() {
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-[#1c1d1f]">Actions commerciales</h1>
+        <h1 className="text-2xl font-semibold text-[#000002]">Actions commerciales</h1>
         <p className="mt-1 text-sm text-[#848689]">
           Campagnes en cours. Les actions expirées sont grisées et ne s&apos;appliquent plus.
         </p>
@@ -61,7 +61,7 @@ function Carte({
       className={`mb-3 rounded-xl border border-black/10 bg-white p-4 ${expiree ? "opacity-50" : ""}`}
     >
       <div className="flex items-start justify-between gap-3">
-        <span className="font-semibold text-[#1c1d1f]">{a.titre}</span>
+        <span className="font-semibold text-[#000002]">{a.titre}</span>
         {expiree ? (
           <span className="shrink-0 rounded-full bg-black/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-[#5F6062]">
             Expirée
@@ -73,7 +73,7 @@ function Carte({
         )}
       </div>
       {(a.gammes || a.avantage) && (
-        <p className="mt-1 text-sm text-[#1c1d1f]">
+        <p className="mt-1 text-sm text-[#000002]">
           {a.gammes ? `${a.gammes} — ` : ""}
           {a.avantage && <span className="font-semibold text-[#C71121]">{a.avantage}</span>}
         </p>

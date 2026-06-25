@@ -12,7 +12,7 @@ export default function RowActions({ role, toggleRole, remove }: Props) {
       <form action={toggleRole}>
         <button
           type="submit"
-          className="rounded-lg border border-black/10 px-3 py-1.5 text-xs font-medium text-[#1c1d1f] transition-colors hover:border-[#C71121]"
+          className="rounded-lg border border-black/10 px-3 py-1.5 text-xs font-medium text-[#000002] transition-colors hover:border-[#C71121]"
         >
           {role === "admin" ? "Passer commercial" : "Passer admin"}
         </button>

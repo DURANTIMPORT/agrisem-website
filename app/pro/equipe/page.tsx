@@ -20,7 +20,7 @@ export default async function EquipePage() {
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-[#1c1d1f]">Équipe</h1>
+        <h1 className="text-2xl font-semibold text-[#000002]">Équipe</h1>
         <p className="mt-1 text-sm text-[#848689]">
           Gérez les accès à l&apos;espace Pro.
         </p>
@@ -40,7 +40,7 @@ export default async function EquipePage() {
                 className="flex items-center justify-between gap-3 rounded-xl border border-black/10 bg-white p-3"
               >
                 <div className="min-w-0">
-                  <p className="truncate text-sm text-[#1c1d1f]">
+                  <p className="truncate text-sm text-[#000002]">
                     {inv.emailAddress}
                   </p>
                   <p className="text-xs text-[#848689]">En attente d&apos;acceptation</p>
@@ -80,7 +80,7 @@ export default async function EquipePage() {
                 className="flex items-center justify-between gap-3 rounded-xl border border-black/10 bg-white p-3"
               >
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-medium text-[#1c1d1f]">
+                  <p className="truncate text-sm font-medium text-[#000002]">
                     {nom || email}
                   </p>
                   <p className="truncate text-xs text-[#848689]">{email}</p>

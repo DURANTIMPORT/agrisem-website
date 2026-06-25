@@ -1,4 +1,5 @@
 import Link from "next/link";
+// Couleurs MF (charte) : noir #000002, rouge #C71121
 import { currentUser } from "@clerk/nextjs/server";
 import { roleFromUser } from "@/lib/pro/roles";
 
@@ -58,10 +59,10 @@ export default async function ProHomePage() {
   return (
     <div className="mx-auto max-w-md space-y-6">
       <div>
-        <p className="text-sm text-navy-dark/60">
+        <p className="text-sm text-[#000002]/60">
           Bonjour{prenom ? ` ${prenom}` : ""},
         </p>
-        <h1 className="mt-1 text-2xl font-semibold text-navy-dark">
+        <h1 className="mt-1 text-2xl font-semibold text-[#000002]">
           Espace Pro Agrisem
         </h1>
         <span className="mt-2 inline-block rounded-full bg-[#C71121] px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white">
@@ -74,19 +75,19 @@ export default async function ProHomePage() {
           const contenu = (
             <>
               <div>
-                <h2 className="text-base font-semibold text-navy-dark">
+                <h2 className="text-base font-semibold text-[#000002]">
                   {tuile.titre}
                 </h2>
-                <p className="mt-0.5 text-sm text-navy-dark/60">
+                <p className="mt-0.5 text-sm text-[#000002]/60">
                   {tuile.description}
                 </p>
               </div>
               {tuile.bientot ? (
-                <span className="shrink-0 rounded-full bg-black/5 px-2.5 py-1 text-xs font-medium text-navy-dark/50">
+                <span className="shrink-0 rounded-full bg-black/5 px-2.5 py-1 text-xs font-medium text-[#000002]/50">
                   Bientôt
                 </span>
               ) : tuile.href ? (
-                <span className="shrink-0 text-navy-dark/30">›</span>
+                <span className="shrink-0 text-[#000002]/30">›</span>
               ) : null}
             </>
           );
@@ -111,7 +112,7 @@ export default async function ProHomePage() {
       </div>
 
       {role === "commercial" && (
-        <p className="text-center text-xs text-navy-dark/40">
+        <p className="text-center text-xs text-[#000002]/40">
           Accès en consultation. Contactez un administrateur pour toute
           modification.
         </p>

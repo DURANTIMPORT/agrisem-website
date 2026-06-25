@@ -126,7 +126,7 @@ export default function Calculateur({
   return (
     <div className="mf-root">
       <style>{`
-        .mf-root { --red:#C71121; --ink:#1c1d1f; --steel:#5F6062; --line:#dcdcdb; --bg:#f2f3f4; --mute:#848689; --green:#1a8a3f; --greenbg:#e8f6ec;
+        .mf-root { --red:#C71121; --ink:#000002; --steel:#5F6062; --line:#dcdcdb; --bg:#f2f3f4; --mute:#848689; --green:#1a8a3f; --greenbg:#e8f6ec;
           font-family:'Barlow Semi Condensed','Inter',system-ui,sans-serif; color:var(--ink); }
         .mf-root .wrap { max-width:560px; margin:0 auto; }
         .mf-root .brand { font-weight:700; letter-spacing:.06em; font-size:13px; color:var(--steel); }
