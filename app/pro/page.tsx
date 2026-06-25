@@ -125,7 +125,7 @@ export default async function ProHomePage() {
           alt="Massey Ferguson"
           width={526}
           height={306}
-          className="h-auto w-40 opacity-90"
+          className="h-auto w-56 opacity-90"
         />
       </div>
     </div>
