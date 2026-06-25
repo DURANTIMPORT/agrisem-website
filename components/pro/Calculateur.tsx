@@ -60,12 +60,16 @@ export default function Calculateur({
     setBrutInput(mo.brutIndicatif != null ? String(mo.brutIndicatif) : "");
   };
 
+  const machineSel =
+    model && mode === "stock" && model.stock.length ? model.stock[stockSel] : null;
+  // Machine de démo (« sur demande ») : pas de prix → saisie manuelle du prix négocié.
+  const saisieBrut = mode === "config" || (machineSel != null && machineSel.prixBrut == null);
   const activeBrut = !model
     ? 0
-    : mode === "stock" && model.stock.length
-      ? model.stock[stockSel].prixBrut
+    : machineSel && machineSel.prixBrut != null
+      ? machineSel.prixBrut
       : parseFloat(brutInput) || 0;
-  const activePo = model && mode === "stock" && model.stock.length ? model.stock[stockSel].po : null;
+  const activePo = machineSel?.po ?? null;
 
   const calc = useMemo(() => {
     if (!model || activeBrut <= 0) return { net: 0, lignes: [] as ReturnType<typeof calculerNet>["lignes"] };
@@ -285,18 +289,18 @@ export default function Calculateur({
                 <div>
                   {model.stock.map((mc, i) => (
                     <div key={i} className={`mrow ${stockSel === i ? "on" : ""}`} onClick={() => setStockSel(i)}>
-                      <span className="mc"><b>{fmt(mc.prixBrut)}</b><br />{mc.config}</span>
-                      <span className="po">PO {mc.po}</span>
+                      <span className="mc"><b>{mc.prixBrut != null ? fmt(mc.prixBrut) : "Sur demande"}</b><br />{mc.config}</span>
+                      {mc.po && <span className="po">PO {mc.po}</span>}
                     </div>
                   ))}
                 </div>
               )}
 
-              {mode === "config" && (
-                <div>
+              {saisieBrut && (
+                <div style={mode === "stock" ? { marginTop: 10 } : undefined}>
                   <div className="lbl">
-                    Prix brut{" "}
-                    {model.brutIndicatif != null && (
+                    {mode === "config" ? "Prix brut" : "Prix négocié (démo)"}{" "}
+                    {mode === "config" && model.brutIndicatif != null && (
                       <span style={{ textTransform: "none", letterSpacing: 0, color: "var(--mute)" }}>
                         (indicatif — ajustable)
                       </span>

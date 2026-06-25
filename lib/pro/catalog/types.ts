@@ -15,8 +15,8 @@ export interface EtapeRemise {
 
 /** Machine physique réellement en stock, rattachée à un modèle. */
 export interface MachineStock {
-  po: string; // numéro de PO
-  prixBrut: number;
+  po: string | null; // numéro de PO (parfois absent)
+  prixBrut: number | null; // null = « sur demande » (machines de démo)
   config: string; // pneus, options, guidage…
 }
 

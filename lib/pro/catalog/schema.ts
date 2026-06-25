@@ -40,12 +40,14 @@ export const SCHEMA_STATEMENTS: string[] = [
      id          SERIAL PRIMARY KEY,
      modele_id   INT  NOT NULL REFERENCES modeles(id) ON DELETE CASCADE,
      po          TEXT,
-     prix_brut   NUMERIC NOT NULL,
+     prix_brut   NUMERIC,
      config      TEXT NOT NULL DEFAULT '',
      source      TEXT NOT NULL DEFAULT 'seed'
    )`,
   // Pour les bases déjà créées sans la colonne source :
   `ALTER TABLE machines_stock ADD COLUMN IF NOT EXISTS source TEXT NOT NULL DEFAULT 'seed'`,
+  // Le prix peut être absent (machines de démo « sur demande ») :
+  `ALTER TABLE machines_stock ALTER COLUMN prix_brut DROP NOT NULL`,
   `CREATE TABLE IF NOT EXISTS settings (
      cle     TEXT PRIMARY KEY,
      valeur  TEXT NOT NULL

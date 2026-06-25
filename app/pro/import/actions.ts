@@ -168,9 +168,9 @@ export async function publishStock(
           ? map.get(`${m.gammeKey}|${m.sousKey}|${m.modeleCatalogue}`)
           : undefined,
     }))
-    .filter((x) => x.entry && x.m.prixBrut != null);
+    .filter((x) => x.entry);
 
-  const ignoreesSansPrix = machines.filter((m) => m.reconnu && m.prixBrut == null).length;
+  const surDemande = aPublier.filter((x) => x.m.prixBrut == null).length;
   const nonReconnues = machines.filter((m) => !m.reconnu).length;
 
   try {
@@ -184,7 +184,7 @@ export async function publishStock(
       );
     }
     const parts = [`${aPublier.length} machine(s) publiée(s)`];
-    if (ignoreesSansPrix) parts.push(`${ignoreesSansPrix} sans prix ignorée(s)`);
+    if (surDemande) parts.push(`dont ${surDemande} démo « sur demande »`);
     if (nonReconnues) parts.push(`${nonReconnues} non reconnue(s) ignorée(s)`);
     return { success: parts.join(" · ") + "." };
   } catch (e) {

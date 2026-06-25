@@ -108,9 +108,9 @@ async function readFromDb(
     const mo = modeles.get(st.modele_id);
     if (!mo) continue;
     const machine: MachineStock = {
-      po: st.po,
-      prixBrut: num(st.prix_brut),
-      config: st.config,
+      po: st.po ?? null,
+      prixBrut: st.prix_brut != null ? num(st.prix_brut) : null,
+      config: st.config ?? "",
     };
     mo.stock.push(machine);
   }
