@@ -13,7 +13,7 @@ type Tuile = {
 
 const TUILES_COMMERCIAL: Tuile[] = [
   {
-    titre: "Calculateur de remises",
+    titre: "Calculateur de remises MF",
     description: "Prix net concessionnaire par modèle Massey Ferguson.",
     bientot: false,
     href: "/pro/calculateur",
