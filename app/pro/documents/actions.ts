@@ -30,7 +30,7 @@ export async function uploadDocument(
   try {
     const safe = file.name.replace(/[^\w.\-]/g, "_");
     const blob = await put(`pro-documents/${Date.now()}-${safe}`, file, {
-      access: "public",
+      access: "private",
       contentType: "application/pdf",
     });
     await sql.query(
