@@ -65,4 +65,13 @@ export const SCHEMA_STATEMENTS: string[] = [
      conditions     TEXT,
      position       INT NOT NULL DEFAULT 0
    )`,
+  `CREATE TABLE IF NOT EXISTS documents (
+     id            SERIAL PRIMARY KEY,
+     titre         TEXT NOT NULL,
+     blob_url      TEXT NOT NULL,
+     pathname      TEXT NOT NULL,
+     taille        BIGINT,
+     content_type  TEXT,
+     uploaded_at   TIMESTAMPTZ NOT NULL DEFAULT now()
+   )`,
 ];

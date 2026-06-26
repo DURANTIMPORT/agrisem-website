@@ -24,6 +24,12 @@ const TUILES_COMMERCIAL: Tuile[] = [
     bientot: false,
     href: "/pro/actions",
   },
+  {
+    titre: "Documents",
+    description: "Tarifs, notices, fiches techniques à télécharger.",
+    bientot: false,
+    href: "/pro/documents",
+  },
 ];
 
 const TUILES_ADMIN: Tuile[] = [
