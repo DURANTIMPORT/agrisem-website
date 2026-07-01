@@ -113,9 +113,9 @@ const brands = [
     reverse: true,
     logo: {
       src: "/brands/giant-logo.png",
-      width: 1280,
-      height: 1251,
-      className: "h-20 w-auto max-w-full sm:h-28 lg:h-36",
+      width: 1800,
+      height: 621,
+      className: "h-16 w-auto max-w-full sm:h-20 lg:h-24",
     },
     video: {
       mp4: "/brands/giant-hero.mp4",
