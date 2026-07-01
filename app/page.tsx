@@ -148,10 +148,10 @@ export default function Home() {
           <Image
             src="/logo-white.png"
             alt="Agrisem S.A."
-            width={320}
-            height={67}
+            width={1000}
+            height={334}
             priority
-            className="mb-8 h-14 w-auto sm:h-20"
+            className="mb-8 h-16 w-auto sm:h-24"
           />
           <Parallax speed={0.4}>
             <h1 className="max-w-4xl text-4xl font-semibold tracking-tight sm:text-6xl lg:text-7xl">

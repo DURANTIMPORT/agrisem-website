@@ -7,12 +7,12 @@ export default function Header() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
         <Link href="/" className="flex items-center gap-2">
           <Image
-            src="/logo.jpg"
+            src="/logo.png"
             alt="Agrisem S.A."
-            width={180}
-            height={40}
+            width={1000}
+            height={334}
             priority
-            className="h-8 w-auto sm:h-10"
+            className="h-10 w-auto sm:h-12"
           />
         </Link>
         <nav className="flex items-center gap-6 text-sm font-medium text-navy-dark">
