@@ -151,7 +151,7 @@ export default function Home() {
             width={1000}
             height={334}
             priority
-            className="mb-8 h-20 w-auto sm:h-28"
+            className="mb-8 h-24 w-auto sm:h-36"
           />
           <Parallax speed={0.4}>
             <h1 className="max-w-4xl text-4xl font-semibold tracking-tight sm:text-6xl lg:text-7xl">
