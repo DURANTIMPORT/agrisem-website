@@ -132,7 +132,7 @@ export default function AboutPage() {
             </p>
             <Link
               href="/contact"
-              className="mt-8 inline-flex items-center justify-center rounded-full bg-gold px-8 py-4 text-base font-medium text-navy-dark transition-transform duration-300 hover:scale-105"
+              className="mt-8 inline-flex items-center justify-center rounded-full bg-gold px-8 py-4 text-base font-medium text-white transition-transform duration-300 hover:scale-105"
             >
               Nous contacter
             </Link>

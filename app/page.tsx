@@ -162,7 +162,7 @@ export default function Home() {
           </Parallax>
           <a
             href="#marques"
-            className="mt-10 inline-flex items-center justify-center rounded-full bg-gold px-8 py-4 text-base font-medium text-navy-dark transition-transform duration-300 hover:scale-105"
+            className="mt-10 inline-flex items-center justify-center rounded-full bg-gold px-8 py-4 text-base font-medium text-white transition-transform duration-300 hover:scale-105"
           >
             Découvrir nos marques
           </a>
@@ -193,7 +193,7 @@ export default function Home() {
             </p>
             <Link
               href="/contact"
-              className="mt-10 inline-flex items-center justify-center rounded-full bg-gold px-8 py-4 text-base font-medium text-navy-dark transition-colors hover:bg-white"
+              className="mt-10 inline-flex items-center justify-center rounded-full bg-gold px-8 py-4 text-base font-medium text-white transition-colors hover:bg-white hover:text-navy-dark"
             >
               Nous contacter
             </Link>

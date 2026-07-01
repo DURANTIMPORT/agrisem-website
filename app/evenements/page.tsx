@@ -60,7 +60,7 @@ export default function EvenementsPage() {
 
               {/* Colonne droite : contenu */}
               <div className="bg-white px-8 py-8">
-                <span className="inline-block rounded-full bg-gold px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy-dark">
+                <span className="inline-block rounded-full bg-gold px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white">
                   À venir
                 </span>
                 <h2 className="mt-4 text-2xl font-semibold tracking-tight text-navy-dark">
@@ -102,7 +102,7 @@ export default function EvenementsPage() {
                 <div className="mt-6">
                   <Link
                     href="/contact"
-                    className="inline-flex items-center justify-center rounded-full bg-gold px-6 py-3 text-sm font-medium text-navy-dark transition-transform duration-300 hover:scale-105"
+                    className="inline-flex items-center justify-center rounded-full bg-gold px-6 py-3 text-sm font-medium text-white transition-transform duration-300 hover:scale-105"
                   >
                     Nous contacter pour plus d&apos;informations
                   </Link>

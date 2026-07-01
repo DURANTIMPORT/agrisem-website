@@ -3,9 +3,15 @@
 :root {
   --background: #ffffff;
   --foreground: #1a1a1a;
-  --navy: #1c3f6e;
-  --navy-dark: #122a4d;
-  --gold: #f3a93b;
+  /* Charte Massey Ferguson / Agrisem 2026.
+     Les noms navy/navy-dark/gold sont conservés (compatibilité des classes
+     existantes) mais portent désormais les couleurs officielles :
+       navy       = gris anthracite MF (#5F6062)
+       navy-dark  = noir MF (#000002)
+       gold       = rouge MF (#C71121, couleur d'accent) */
+  --navy: #5f6062;
+  --navy-dark: #000002;
+  --gold: #c71121;
 }
 
 @theme inline {

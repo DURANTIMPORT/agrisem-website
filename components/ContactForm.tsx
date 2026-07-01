@@ -249,7 +249,7 @@ export default function ContactForm() {
         />
       </div>
 
-      <div className="rounded-2xl border border-black/10 bg-[#fdf3e7] p-6 text-sm text-navy-dark/80">
+      <div className="rounded-2xl border border-black/10 bg-[#f5f5f6] p-6 text-sm text-navy-dark/80">
         <h3 className="text-base font-semibold text-navy-dark">
           Protection de vos données personnelles (RGPD)
         </h3>
@@ -344,7 +344,7 @@ export default function ContactForm() {
             <button
               type="button"
               onClick={() => setShowGdpr(false)}
-              className="mt-6 inline-flex items-center justify-center rounded-full bg-gold px-6 py-2.5 text-sm font-medium text-navy-dark transition-transform duration-300 hover:scale-105"
+              className="mt-6 inline-flex items-center justify-center rounded-full bg-gold px-6 py-2.5 text-sm font-medium text-white transition-transform duration-300 hover:scale-105"
             >
               Fermer
             </button>
@@ -362,7 +362,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={status === "loading"}
-        className="inline-flex w-full items-center justify-center rounded-full bg-gold px-8 py-4 text-base font-medium text-navy-dark transition-transform duration-300 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+        className="inline-flex w-full items-center justify-center rounded-full bg-gold px-8 py-4 text-base font-medium text-white transition-transform duration-300 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
       >
         {status === "loading" ? "Envoi en cours..." : "Envoyer ma demande"}
       </button>

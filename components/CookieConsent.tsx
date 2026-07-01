@@ -89,7 +89,7 @@ export default function CookieConsent() {
             <button
               type="button"
               onClick={() => choose("accepted")}
-              className="rounded-full bg-gold px-5 py-2.5 text-sm font-medium text-navy-dark transition-transform duration-300 hover:scale-105"
+              className="rounded-full bg-gold px-5 py-2.5 text-sm font-medium text-white transition-transform duration-300 hover:scale-105"
             >
               Accepter
             </button>
@@ -163,7 +163,7 @@ export default function CookieConsent() {
               <button
                 type="button"
                 onClick={() => choose("accepted")}
-                className="rounded-full bg-gold px-6 py-2.5 text-sm font-medium text-navy-dark transition-transform duration-300 hover:scale-105"
+                className="rounded-full bg-gold px-6 py-2.5 text-sm font-medium text-white transition-transform duration-300 hover:scale-105"
               >
                 Accepter
               </button>
