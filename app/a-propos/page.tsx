@@ -54,6 +54,20 @@ const brands = [
     description:
       "Chargeurs articulés et télescopiques compacts, polyvalents pour l'agriculture et les espaces verts.",
   },
+  {
+    name: "ROL-EX",
+    tagline: "Travail du sol & semis",
+    href: "https://rol-ex.com.pl",
+    description:
+      "Matériel de travail du sol, de labour, de roulage et de semis, conçu pour une agriculture de précision.",
+  },
+  {
+    name: "DiBO",
+    tagline: "Nettoyeurs haute pression",
+    href: "https://www.dibo.com/fr-be",
+    description:
+      "Nettoyeurs haute pression à eau froide ou chaude, générateurs de vapeur et systèmes de lavage pour les professionnels.",
+  },
 ];
 
 export default function AboutPage() {
@@ -89,6 +103,18 @@ export default function AboutPage() {
               restent au cœur de notre savoir-faire, pour vous conseiller le
               matériel le plus adapté à votre exploitation ou à votre
               chantier.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="text-3xl font-semibold tracking-tight text-navy-dark">
+              Notre département pneumatiques
+            </h2>
+            <p className="mt-4 text-navy-dark/80">
+              Agrisem S.A. dispose d&apos;un département pneumatiques à part
+              entière, dédié à la vente, au montage et au dépannage de pneus.
+              Nous intervenons aussi bien sur les tracteurs et le matériel
+              agricole que sur les voitures particulières.
             </p>
           </div>
 

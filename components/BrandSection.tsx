@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Reveal from "@/components/Reveal";
 import Parallax from "@/components/Parallax";
+import Spin360 from "@/components/Spin360";
+import Carousel from "@/components/Carousel";
 
 type BrandSectionProps = {
   name: string;
@@ -12,11 +14,18 @@ type BrandSectionProps = {
   bg: string;
   fg: string;
   accent: string;
+  /** Optional background for the visual (media) half, when it should differ from the text half. */
+  visualBg?: string;
   reverse?: boolean;
   fit?: "cover" | "contain";
   video?: { mp4: string; webm: string; poster: string };
+  spin360?: { base: string; count: number; ext?: string };
+  /** Optional photo carousel shown as the visual. */
+  carousel?: string[];
   kenBurns?: boolean;
   logo?: { src: string; width: number; height: number; className?: string };
+  /** Wrap the logo in a white rounded panel (for colour logos on a dark/coloured background). */
+  logoPanel?: boolean;
 };
 
 export default function BrandSection({
@@ -29,11 +38,15 @@ export default function BrandSection({
   bg,
   fg,
   accent,
+  visualBg,
   reverse = false,
   fit = "cover",
   video,
+  spin360,
+  carousel,
   kenBurns = false,
   logo,
+  logoPanel = false,
 }: BrandSectionProps) {
   return (
     <section
@@ -41,8 +54,25 @@ export default function BrandSection({
         reverse ? "lg:flex-row-reverse" : ""
       }`}
     >
-      <div className="relative flex h-[45vh] w-full items-center justify-center overflow-hidden lg:h-screen lg:w-1/2">
-        {video ? (
+      <div
+        className={`relative flex h-[45vh] w-full items-center justify-center overflow-hidden lg:h-screen lg:w-1/2 ${
+          visualBg ?? ""
+        }`}
+      >
+        {carousel ? (
+          <div className="absolute inset-0">
+            <Carousel images={carousel} alt={imageAlt} />
+          </div>
+        ) : spin360 ? (
+          <div className="absolute inset-0">
+            <Spin360
+              base={spin360.base}
+              count={spin360.count}
+              ext={spin360.ext}
+              alt={imageAlt}
+            />
+          </div>
+        ) : video ? (
           <Parallax speed={0.1} className="absolute inset-0 scale-110">
             <video
               className="h-full w-full object-cover"
@@ -89,15 +119,29 @@ export default function BrandSection({
           </span>
           <h2 className="mt-4 text-5xl font-semibold tracking-tight sm:text-6xl lg:text-7xl">
             {logo ? (
-              <Image
-                src={logo.src}
-                alt={name}
-                width={logo.width}
-                height={logo.height}
-                className={
-                  logo.className ?? "h-14 w-auto max-w-full sm:h-20 lg:h-24"
-                }
-              />
+              logoPanel ? (
+                <span className="inline-flex rounded-2xl bg-white p-5 shadow-lg sm:p-6">
+                  <Image
+                    src={logo.src}
+                    alt={name}
+                    width={logo.width}
+                    height={logo.height}
+                    className={
+                      logo.className ?? "h-14 w-auto max-w-full sm:h-20 lg:h-24"
+                    }
+                  />
+                </span>
+              ) : (
+                <Image
+                  src={logo.src}
+                  alt={name}
+                  width={logo.width}
+                  height={logo.height}
+                  className={
+                    logo.className ?? "h-14 w-auto max-w-full sm:h-20 lg:h-24"
+                  }
+                />
+              )
             ) : (
               name
             )}

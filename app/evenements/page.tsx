@@ -27,7 +27,7 @@ export default function EvenementsPage() {
           Événements
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-white/80">
-          Retrouvez-nous sur les foires et salons de la région pour
+          Retrouvez-nous prochainement sur les foires et salons pour
           découvrir notre gamme et rencontrer notre équipe.
         </p>
       </section>
@@ -40,7 +40,7 @@ export default function EvenementsPage() {
             <div className="flex flex-col sm:flex-row">
 
               {/* Colonne gauche : logo + lieu sur fond marine */}
-              <div className="flex shrink-0 flex-col items-center justify-center gap-5 bg-navy px-10 py-10 sm:w-56">
+              <div className="flex shrink-0 flex-col items-center justify-center gap-5 bg-gris px-10 py-10 sm:w-56">
                 <Image
                   src="/events/libramont-100ans.png"
                   alt="Foire de Libramont — 100 ans"

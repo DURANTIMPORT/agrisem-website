@@ -8,10 +8,12 @@
      existantes) mais portent désormais les couleurs officielles :
        navy       = noir MF (#000002) — sections/bandeaux sombres
        navy-dark  = noir MF (#000002)
-       gold       = rouge MF (#C71121, couleur d'accent) */
+       gold       = rouge MF (#C71121, couleur d'accent)
+       gris       = gris foncé MF (#5F6062) */
   --navy: #000002;
   --navy-dark: #000002;
   --gold: #c71121;
+  --gris: #5f6062;
 }
 
 @theme inline {
@@ -20,6 +22,7 @@
   --color-navy: var(--navy);
   --color-navy-dark: var(--navy-dark);
   --color-gold: var(--gold);
+  --color-gris: var(--gris);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
