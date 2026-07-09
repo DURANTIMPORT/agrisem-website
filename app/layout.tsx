@@ -6,6 +6,7 @@ import "./globals.css";
 import { SiteHeader, SiteFooter } from "@/components/SiteChrome";
 import CookieConsent from "@/components/CookieConsent";
 import Analytics from "@/components/Analytics";
+import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
 import { BUSINESS, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site-config";
 
 const geistSans = Geist({
@@ -152,6 +153,7 @@ export default function RootLayout({
           <SiteFooter />
           <CookieConsent />
           <Analytics />
+          <VercelAnalytics />
         </ClerkProvider>
       </body>
     </html>
