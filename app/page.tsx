@@ -173,6 +173,27 @@ const brands = [
       className: "h-12 w-auto max-w-full sm:h-16 lg:h-20",
     },
   },
+  {
+    name: "DétruiRAT",
+    tagline: "Dératisation écologique · sans poison",
+    description:
+      "Pièges électroniques nouvelle génération pour rats et souris : une solution professionnelle, écologique et sans poison, sûre pour les animaux domestiques.",
+    href: "https://www.detruirat.com",
+    image: "/brands/detruirat/device.webp",
+    imageAlt: "Piège électronique DétruiRAT",
+    bg: "bg-[#0e3a37]",
+    fg: "text-white",
+    accent: "#2dd4bf",
+    reverse: true,
+    visualBg: "bg-[#14453f]",
+    fit: "contain" as const,
+    logo: {
+      src: "/brands/detruirat/logo.webp",
+      width: 1200,
+      height: 565,
+      className: "h-12 w-auto max-w-full rounded-xl sm:h-14 lg:h-20",
+    },
+  },
 ];
 
 export default function Home() {

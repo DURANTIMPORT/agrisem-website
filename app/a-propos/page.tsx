@@ -68,6 +68,13 @@ const brands = [
     description:
       "Nettoyeurs haute pression à eau froide ou chaude, générateurs de vapeur et systèmes de lavage pour les professionnels.",
   },
+  {
+    name: "DétruiRAT",
+    tagline: "Pièges anti-rongeurs écologiques",
+    href: "https://www.detruirat.com",
+    description:
+      "Pièges électroniques pour rats et souris : une solution professionnelle, écologique et sans poison.",
+  },
 ];
 
 export default function AboutPage() {
